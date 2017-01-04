@@ -3,7 +3,10 @@ package org.cryptaz.minermetrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class Configuration {
@@ -22,35 +25,14 @@ public class Configuration {
             inputStream = new FileInputStream(new File(path));
             properties.load(inputStream);
         } catch (IOException e) {
-            logger.warn("Configuration file not found(IOException), creating.");
-            initFile(properties, path);
-            inputStream = new FileInputStream(new File(path));
-            properties.load(inputStream);
-        }
-    }
-
-    private void initFile(Properties properties, String path) {
-        try {
-            OutputStream outputStream = new FileOutputStream(new File(path));
-            setDefaultProperties();
-            properties.store(outputStream, null);
-            outputStream.flush();
-            outputStream.close();
-        } catch (IOException e1) {
-            logger.error("Could not neither load or save configuration file! Exiting");
+            logger.error("Could not load configuration file (IOException). Exiting");
             System.exit(1);
         }
-    }
 
-    private void setDefaultProperties() {
-        properties.setProperty("url", "http://127.0.0.1:30300");
     }
 
     public Properties getProperties() {
         return properties;
     }
 
-    public void setProperties(Properties properties) {
-        this.properties = properties;
-    }
 }
