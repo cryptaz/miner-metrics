@@ -2,10 +2,12 @@ package org.cryptaz.minermetrics.api.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.cryptaz.minermetrics.TemplateConfigurator;
 import org.cryptaz.minermetrics.api.MinerAPI;
 import org.cryptaz.minermetrics.models.CardTickData;
 import org.cryptaz.minermetrics.models.GeneralTickData;
@@ -16,9 +18,7 @@ import org.joda.time.Period;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -32,6 +32,7 @@ public class ClaymoreAPI implements MinerAPI {
     private boolean lastTrySuccessful;
     private boolean connected;
     private Logger logger = LoggerFactory.getLogger(ClaymoreAPI.class);
+    private TemplateConfigurator templateConfigurator;
 
     public ClaymoreAPI(String claymoreUrl) {
         this.httpClient = HttpClientBuilder.create().build();
@@ -40,6 +41,7 @@ public class ClaymoreAPI implements MinerAPI {
         this.claymoreUrl = claymoreUrl;
         this.lastTrySuccessful = true;
         this.connected = false;
+        this.templateConfigurator = new TemplateConfigurator();
         if (claymoreUrl == null) {
             logger.error("No apiURL set!");
         }
@@ -63,8 +65,10 @@ public class ClaymoreAPI implements MinerAPI {
         HttpGet request = new HttpGet(claymoreUrl);
         HttpResponse response = null;
         try {
+            boolean updateTemplate = false;
             if (lastTrySuccessful && !connected) {
                 logger.info("Daemon started. Going to start collecting data from external APIs.");
+                updateTemplate = true;
             }
             response = httpClient.execute(request);
             int responseCode = response.getStatusLine().getStatusCode();
@@ -105,7 +109,18 @@ public class ClaymoreAPI implements MinerAPI {
                 lastTrySuccessful = false;
                 return null;
             }
-            return convert(claymoreRawDTO);
+
+            ClaymoreTickDTO claymoreTickDTO = convert(claymoreRawDTO);
+            if(updateTemplate){
+                try {
+                    saveTemplate(templateConfigurator.template(claymoreTickDTO.getGeneralTickData().getCardCount()));
+                }
+                catch (Exception e){
+                    logger.error("Could not make template! Probably IO error.");
+                    e.printStackTrace();
+                }
+            }
+            return claymoreTickDTO;
         } catch (IOException e) {
             //e.printStackTrace();
             logger.error("Could not get api data for miner (Rejecting sending)");
@@ -155,5 +170,17 @@ public class ClaymoreAPI implements MinerAPI {
         tickDTO.setGeneralTickData(generalTickData);
         tickDTO.setCardTickDatas(cardTickDatas);
         return tickDTO;
+    }
+
+    private void saveTemplate(String json) throws IOException {
+        File file = new File("default_dashboards.json");
+        if(file.delete()){
+            logger.debug("Template deleted");
+        }else{
+            logger.debug("Delete template operation is failed.");
+        }
+
+        logger.debug("Saving template to file");
+        FileUtils.writeStringToFile(new File("default_dashboards.json"), json);
     }
 }
