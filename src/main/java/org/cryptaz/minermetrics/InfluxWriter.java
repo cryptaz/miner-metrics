@@ -10,6 +10,7 @@ import org.influxdb.dto.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 
@@ -17,15 +18,25 @@ public class InfluxWriter {
 
     private static Logger log = LoggerFactory.getLogger(InfluxWriter.class);
 
-    private final String INFLUXDB_HOST = "http://127.0.0.1:8086";
-    private final String INFLUXDB_PASS = "root";
-    private final String INFLUXDB_USER = "root";
-    private final String INFLUXDB_DB = "miner";
+    private String INFLUXDB_HOST = null;
+    private String INFLUXDB_PASS = null;
+    private String INFLUXDB_USER = null;
+    private String INFLUXDB_DB = null;
 
     private InfluxDB influxDB;
+    private Properties properties;
+
+    public InfluxWriter(Properties properties) {
+        this.properties = properties;
+        INFLUXDB_HOST = properties.getProperty("influxdb_host");
+        INFLUXDB_USER = properties.getProperty("influxdb_user");
+        INFLUXDB_PASS = properties.getProperty("influxdb_pass");
+        INFLUXDB_DB = properties.getProperty("influxdb_db");
+        this.influxDB = InfluxDBFactory.connect(INFLUXDB_HOST, INFLUXDB_USER, INFLUXDB_PASS);
+    }
 
     public InfluxWriter() {
-        this.influxDB = InfluxDBFactory.connect(INFLUXDB_HOST, INFLUXDB_USER, INFLUXDB_PASS);
+        throw new IllegalArgumentException("Do not call without properties!");
     }
 
     public boolean writeClaymoreTick(ClaymoreTickDTO tickDTO) {

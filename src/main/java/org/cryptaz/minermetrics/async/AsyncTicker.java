@@ -9,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class AsyncTicker implements Runnable {
     private boolean isWorking = true;
@@ -40,14 +38,7 @@ public class AsyncTicker implements Runnable {
         this.failedTicks = 0;
         log.trace("Async worker started");
         minerAPI = new ClaymoreAPI(claymoreApiUrl);
-        influxWriter = new InfluxWriter();
-
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-            }
-        }, 1000, 1000);
+        influxWriter = new InfluxWriter(properties);
 
         while (isWorking) {
             DateTime dateTime = new DateTime();
@@ -66,7 +57,7 @@ public class AsyncTicker implements Runnable {
             }
             if (lastNotified == null  ||  new DateTime().minusMinutes(notificationTime).isAfter(lastNotified)) {
                 lastNotified = dateTime;
-                log.info("Processed {} ticks [{} successful successfulTicks; {} failed]", successfulTicks + failedTicks, successfulTicks, failedTicks);
+                log.info("Processed {} ticks [{} successful; {} failed]", successfulTicks + failedTicks, successfulTicks, failedTicks);
             }
         }
     }

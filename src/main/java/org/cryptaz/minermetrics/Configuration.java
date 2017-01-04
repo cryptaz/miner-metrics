@@ -40,6 +40,10 @@ public class Configuration {
         properties.setProperty("claymore_api_url", "http://192.168.99.1:30500");
         properties.setProperty("tick_poll_time", "5");
         properties.setProperty("stat_notification_time", "1");
+        properties.setProperty("influxdb_host", "http://127.0.0.1:8086");
+        properties.setProperty("influxdb_user", "root");
+        properties.setProperty("influxdb_pass", "root");
+        properties.setProperty("influxdb_db", "minermetrics");
         try {
             OutputStream outputStream = new FileOutputStream(new File(path));
             properties.store(outputStream, null);
