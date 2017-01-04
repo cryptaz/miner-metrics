@@ -14,7 +14,8 @@ public class Application {
     public static void main(String[] args) throws IOException {
         // Set up a simple configuration that logs on the console.
         logger.trace("Loading configuration");
-        Configuration configuration = new Configuration("src/main/resources/config/daemon.properties");
+
+        Configuration configuration = new Configuration("daemon.properties");
 
         if(args.length > 0) {
             logger.warn("The miner-metrics daemon does not expect to run with any arguments!");
@@ -25,7 +26,5 @@ public class Application {
         AsyncTicker asyncTicker = new AsyncTicker(configuration.getProperties());
         Thread thread = new Thread(asyncTicker);
         thread.start();
-
-
     }
 }

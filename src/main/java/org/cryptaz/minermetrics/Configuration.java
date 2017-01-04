@@ -3,10 +3,7 @@ package org.cryptaz.minermetrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 public class Configuration {
@@ -20,9 +17,14 @@ public class Configuration {
 
     public Configuration(String path) throws IOException {
 
+        File file = new File(path);
+        if(!file.exists()){
+            logger.info("No config file found! Creating default");
+            initFile(path);
+        }
         this.properties = new Properties();
         try {
-            File file = new File(path);
+            file = new File(path);
             InputStream inputStream = new FileInputStream(file);
             properties.load(inputStream);
         } catch (IOException | NullPointerException e) {
@@ -30,6 +32,23 @@ public class Configuration {
             System.exit(1);
         }
 
+    }
+
+
+    private void initFile( String path) {
+        Properties properties = new Properties();
+        properties.setProperty("claymore_api_url", "http://192.168.99.1:30500");
+        properties.setProperty("tick_poll_time", "5");
+        properties.setProperty("stat_notification_time", "1");
+        try {
+            OutputStream outputStream = new FileOutputStream(new File(path));
+            properties.store(outputStream, null);
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException e1) {
+            logger.error("Could initiate configuration file, check your permissions. Exiting");
+            System.exit(1);
+        }
     }
 
     public Properties getProperties() {
