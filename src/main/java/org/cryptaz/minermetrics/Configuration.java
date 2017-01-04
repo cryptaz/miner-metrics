@@ -3,6 +3,8 @@ package org.cryptaz.minermetrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -19,9 +21,10 @@ public class Configuration {
     public Configuration(String path) throws IOException {
 
         this.properties = new Properties();
-        InputStream inputStream;
         try {
-            properties.load(this.getClass().getClassLoader().getResourceAsStream(path));
+            File file = new File(path);
+            InputStream inputStream = new FileInputStream(file);
+            properties.load(inputStream);
         } catch (IOException | NullPointerException e) {
             logger.error("Could not load configuration file (IOException). Exiting");
             System.exit(1);
