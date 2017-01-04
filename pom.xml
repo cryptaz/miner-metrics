@@ -105,9 +105,6 @@
                 <executions>
                     <execution>
                         <phase>package</phase>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
                     </execution>
                 </executions>
                 <configuration>
@@ -121,6 +118,11 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/resources</directory>
+            </resource>
+        </resources>
 
     </build>
 
