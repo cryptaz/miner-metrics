@@ -20,3 +20,4 @@ target/*
 daemon.properties
 default_dashboards.json
 *.stdout
+*.log

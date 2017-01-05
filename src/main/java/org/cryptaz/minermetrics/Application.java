@@ -1,9 +1,8 @@
 package org.cryptaz.minermetrics;
 
 
+import org.apache.log4j.Logger;
 import org.cryptaz.minermetrics.async.AsyncTicker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.AbstractMap;
@@ -13,11 +12,11 @@ import java.util.Set;
 
 public class Application {
 
-    private static Logger logger = LoggerFactory.getLogger(Application.class);
+    private final static Logger logger = Logger.getLogger(Application.class);
 
     public static void main(String[] args) throws IOException {
         // Set up a simple configuration that logs on the console.
-        logger.trace("Loading configuration");
+        logger.info("Loading configuration");
 
         //Expect input claymore api url from docker environment
         //claymore_api_url=http://192.168.99.1:30500

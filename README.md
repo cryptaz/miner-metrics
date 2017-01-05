@@ -66,6 +66,9 @@ Some places where to find out what's going on. Firstly, ensure that container st
     ```
 You should see something like this:
 ```
+$ docker ps
+CONTAINER ID        IMAGE                   COMMAND                  CREATED                  STATUS              PORTS                                        NAMES
+a1dd27929608        cryptaz/miner-metrics   "/bin/sh -c 'sudo -u "   Less than a second ago   Up 1 seconds        0.0.0.0:8070->80/tcp, 0.0.0.0:80->3000/tcp   miner-metrics
 ```
 
 If daemon did not start, check miner-metrics.stdout for any error messages(appears in your current directory).
