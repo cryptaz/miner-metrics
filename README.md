@@ -55,7 +55,7 @@ And then start normally as described above.
 
 # Troubleshooting
 Some places where to find out what's going on.
-# Firstly, ensure that container started:
+Firstly, ensure that container started:
     ```
     docker ps
     ```
