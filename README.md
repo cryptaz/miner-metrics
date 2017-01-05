@@ -34,7 +34,7 @@ Tool is highly experimental, I would say it's alpha version, so bugs may appear.
 * Add new data source with name ```influx```, type ```InfluxDB```, url ```http://127.0.0.1:8086```, database ```minermetrics```, user ```root```, password ```root```
 * When application is finally initialized and started, the basic dashboard template (JSON) will be accessible on the http://192.168.99.100:8070
 * In dashboards, click import and paste that JSON into textarea, choose datasource - influx db and apply
-* Congratulations! You set up the metrics
+* Congratulations! You set up the metrics. Don't forget to choose time range.
 
 # Usage
 
