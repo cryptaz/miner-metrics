@@ -15,9 +15,12 @@ Tool is highly experimental, I would say it's alpha version, so bugs may appear.
 
     ```
     docker pull cryptaz/miner-metrics
+    ```
+* Patiently wait until environment is set up. It may take up to 30 minutes.
+* Start the container:
+    ```
     docker run --name miner-metrics -e CLAYMORE_API_URL='YOUR_CLAYMORE_API_URL' -d -p 80:3000 -p 8070:80 cryptaz/miner-metrics
     ```
-* Patiently wait till environment is set up(10-30minutes)
 
 YOUR_CLAYMORE_API_URL should be url, that points to Claymore miner monitoring port(set up by -mport port).
 URL should point on the docker's host interface(virtualbox host-only), so obtain it through ```ipconfig /all``` (or ```ip addr``` if on Linux)
