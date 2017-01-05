@@ -42,8 +42,9 @@ Default credentials for Grafana: admin:admin
 
 # Build
 I have attached building scripts in my repo(assets/scripts/build/docker), so you can compile image by yourself.
-Just clone repo, move into folder and type:
+* Just clone repo, move into folder and build(assuming you are in root repository folder):
     ```
+    cd assets/scripts/build/docker/
     docker build -t cryptaz/miner-metrics .
     ```
 And then start normally as described above.
