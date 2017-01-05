@@ -19,3 +19,4 @@ target/*
 *.iml
 daemon.properties
 default_dashboards.json
+*.stdout
