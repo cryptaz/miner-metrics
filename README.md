@@ -27,14 +27,23 @@ YOUR_CLAYMORE_API_URL should be url, that points to Claymore miner monitoring po
 URL should point on the docker's host interface(virtualbox host-only), so obtain it through ```ipconfig /all``` (or ```ip addr``` if on Linux)
 Mine was 192.168.99.1, so my url looked like this ```http://192.168.99.1:30500```
 
+
 # Usage
 After docker container is started, type in terminal:
     ```
-        docker ps
+    docker ps
     ```
 You will find out the ip of container. Just navigate to http://192.168.99.100 to open Grafana dashboards.
 To load generated dashboards(instead of creating all by yourself), just open http://192.168.99.100:8070, copy json, and import it normally from Grafana.
 Default credentials for Grafana: admin:admin
+
+# Build
+I have attached building scripts in my repo(assets/scripts/build/docker), so you can compile image by yourself.
+Just clone repo, move into folder and type:
+    ```
+    docker build -t cryptaz/miner-metrics
+    ```
+And then start normally as described above.
 
 # TODO
 * Log file (Severe)
