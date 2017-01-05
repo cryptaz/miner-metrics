@@ -15,5 +15,6 @@ echo "Starting InfluxDB"
 service influxd start
 influx -execute "create database minermetrics"
 useradd -m metrics
+#FIXME add check for claymore api url is set
 sudo -u metrics git clone https://github.com/cryptaz/miner-metrics.git /home/metrics/miner-metrics
 sudo -u metrics mvn -f /home/metrics/miner-metrics/pom.xml clean install
