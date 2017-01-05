@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 public class Configuration {
 
@@ -15,8 +17,7 @@ public class Configuration {
         throw new Exception("Do not call without file");
     }
 
-    public Configuration(String path) throws IOException {
-
+    public Configuration(String path, Set<Map.Entry<String,String>> environmentVariables) throws IOException {
         File file = new File(path);
         if(!file.exists()){
             logger.info("No config file found! Creating default");
@@ -32,8 +33,14 @@ public class Configuration {
             System.exit(1);
         }
 
-    }
+        if(environmentVariables != null) {
+            for(Map.Entry<String, String> var : environmentVariables){
+                properties.setProperty(var.getKey(), var.getValue());
+            }
+        }
 
+
+    }
 
     private void initFile( String path) {
         Properties properties = new Properties();
