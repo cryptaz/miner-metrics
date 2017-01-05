@@ -6,7 +6,7 @@ We need tests, so feel free to submit issues.
 
 Tool is highly experimental, I would say it's alpha version, so bugs may appear.
 
-![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title")
+![Dashboard](/assets/images/dashboard_sample.png?raw=true "Demo")
 
 # Requirements
 * Docker Toolbox (https://www.docker.com/products/docker-toolbox)
