@@ -1,21 +1,22 @@
 package org.cryptaz.minermetrics.async;
 
+import org.apache.log4j.Logger;
 import org.cryptaz.minermetrics.InfluxWriter;
 import org.cryptaz.minermetrics.api.MinerAPI;
 import org.cryptaz.minermetrics.api.impl.ClaymoreAPI;
 import org.cryptaz.minermetrics.models.dto.ClaymoreTickDTO;
 import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
 public class AsyncTicker implements Runnable {
-    private boolean isWorking = true;
 
+    private final static Logger log = org.apache.log4j.Logger.getLogger(AsyncTicker.class);
+
+
+    private boolean isWorking = true;
     private MinerAPI minerAPI;
     private InfluxWriter influxWriter;
-    private static Logger log = LoggerFactory.getLogger(AsyncTicker.class);
     private long successfulTicks;
     private long failedTicks;
     private int tickTime;
@@ -55,9 +56,9 @@ public class AsyncTicker implements Runnable {
                 }
                 successfulTicks++;
             }
-            if (lastNotified == null  ||  new DateTime().minusMinutes(notificationTime).isAfter(lastNotified)) {
+            if (lastNotified == null || new DateTime().minusMinutes(notificationTime).isAfter(lastNotified)) {
                 lastNotified = dateTime;
-                log.info("Processed {} ticks [{} successful; {} failed]", successfulTicks + failedTicks, successfulTicks, failedTicks);
+                log.info("Processed " + (successfulTicks + failedTicks) + " ticks [" + (successfulTicks + failedTicks) + " successful; " + failedTicks + " failed]");
             }
         }
     }

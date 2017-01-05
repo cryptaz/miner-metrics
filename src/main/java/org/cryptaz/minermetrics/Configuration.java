@@ -1,7 +1,7 @@
 package org.cryptaz.minermetrics;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.util.Map;
@@ -10,7 +10,8 @@ import java.util.Set;
 
 public class Configuration {
 
-    private final Logger logger = LoggerFactory.getLogger(Configuration.class);
+    private final static org.apache.log4j.Logger log = Logger.getLogger(Application.class);
+
     private Properties properties;
 
     public Configuration() throws Exception {
@@ -20,7 +21,7 @@ public class Configuration {
     public Configuration(String path, Set<Map.Entry<String,String>> environmentVariables) throws IOException {
         File file = new File(path);
         if(!file.exists()){
-            logger.info("No config file found! Creating default");
+            log.info("No config file found! Creating default");
             initFile(path);
         }
         this.properties = new Properties();
@@ -29,7 +30,7 @@ public class Configuration {
             InputStream inputStream = new FileInputStream(file);
             properties.load(inputStream);
         } catch (IOException | NullPointerException e) {
-            logger.error("Could not load configuration file (IOException). Exiting");
+            log.error("Could not load configuration file (IOException). Exiting");
             System.exit(1);
         }
 
@@ -57,7 +58,7 @@ public class Configuration {
             outputStream.flush();
             outputStream.close();
         } catch (IOException e1) {
-            logger.error("Could initiate configuration file, check your permissions. Exiting");
+            log.error("Could initiate configuration file, check your permissions. Exiting");
             System.exit(1);
         }
     }

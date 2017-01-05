@@ -1,5 +1,6 @@
 package org.cryptaz.minermetrics;
 
+import org.apache.log4j.Logger;
 import org.cryptaz.minermetrics.models.CardTickData;
 import org.cryptaz.minermetrics.models.GeneralTickData;
 import org.cryptaz.minermetrics.models.dto.ClaymoreTickDTO;
@@ -7,8 +8,6 @@ import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.BatchPoints;
 import org.influxdb.dto.Point;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -16,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 public class InfluxWriter {
 
-    private static Logger log = LoggerFactory.getLogger(InfluxWriter.class);
+    private final static Logger log = Logger.getLogger(InfluxWriter.class);
 
     private String INFLUXDB_HOST = null;
     private String INFLUXDB_PASS = null;

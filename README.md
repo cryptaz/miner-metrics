@@ -10,7 +10,7 @@ Tool is highly experimental, I would say it's alpha version, so bugs may appear.
 
 # Requirements
 * Docker Toolbox (https://www.docker.com/products/docker-toolbox)
-* Latest Claymore ZEC miner (eth miner should be supported also, but I did not tested it)
+* Latest Claymore ZEC miner (eth miner should be supported too, but I did not tested it)
 
 # Install
 * Open Docker Quickstart terminal (or type natively if on linux) and type:
@@ -52,9 +52,8 @@ I have attached building scripts in my repo(assets/scripts/build/docker), so you
 And then start normally as described above.
 
 # TODO
-* Log file (Severe)
 * Test Claymore ETH dualminer
-* Tests
+* Unit tests
 * Add cryptocurrencies ticking and make profit dashboard
 * Maybe add some sort of Admin UI for configuring some logic and miner-metrics-daemon itself, exporting json.
 
