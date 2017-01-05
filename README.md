@@ -6,6 +6,8 @@ We need tests, so feel free to submit issues.
 
 Tool is highly experimental, I would say it's alpha version, so bugs may appear.
 
+![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title")
+
 # Requirements
 * Docker Toolbox (https://www.docker.com/products/docker-toolbox)
 * Latest Claymore ZEC miner (eth miner should be supported also, but I did not tested it)
