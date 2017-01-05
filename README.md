@@ -51,3 +51,16 @@ And then start normally as described above.
 * Tests
 * Add cryptocurrencies ticking and make profit dashboard
 * Maybe add some sort of Admin UI for configuring some logic and miner-metrics-daemon itself, exporting json.
+
+
+# Troubleshooting
+Some places where to find out what's going on.
+# Firstly, ensure that container started:
+    ```
+    docker ps
+    ```
+You should see something like this:
+```
+```
+
+If daemon did not start, check miner-metrics.stdout for any error messages(appears in your current directory).
