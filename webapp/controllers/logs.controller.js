@@ -15,7 +15,7 @@ angular.module('minerMetricsApp')
                         $scope.log = response.data
                 }, function (error) {
                     $scope.log = false;
-                    alert('Error during log opening, watch logs by your self(jumping into Docker)');
+                    alert('Error during log opening, try watching logs by yourself (jumping into Docker)');
                 })
             }
             if(name == 'daemon') {
@@ -28,7 +28,7 @@ angular.module('minerMetricsApp')
                     $scope.log = response.data
                 }, function (error) {
                     $scope.log = false;
-                    alert('Error during log opening, watch logs by your self(jumping into Docker)');
+                    alert('Error during log opening, try watching logs by yourself( jumping into Docker)');
                 })
             }
             return;

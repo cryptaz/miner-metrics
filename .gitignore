@@ -21,6 +21,5 @@ daemon.properties
 default_dashboards.json
 *.stdout
 *.log
-webapp/bower_components
 .initialized
 status.json

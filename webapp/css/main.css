@@ -107,3 +107,31 @@ body {
 .row {
     display: flex !important;
 }
+
+
+.wrap
+{
+    width: auto;
+    height: auto;
+    padding: 0;
+    overflow: hidden;
+}
+
+.frame
+{
+    width: 700px;
+    height: 1000px;
+    border: 0;
+
+    -ms-transform: scale(0.6);
+    -moz-transform: scale(0.6);
+    -o-transform: scale(0.6);
+    -webkit-transform: scale(0.6);
+    transform: scale(0.6);
+
+    -ms-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+}

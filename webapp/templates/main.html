@@ -32,7 +32,14 @@
             <h2 class="sub-header">Claymore instances</h2>
 
             <div class="table-responsive" ng-show="!initialized || !started">
-                Still loading... Wait until application starts
+                Services is still loading. Try wasting the time in this funny memory game<br>
+                <p>
+                    <button class="btn btn-success" ng-click="game=!game">Waste my time</button>
+                </p>
+                <div ng-show="game" class="wrap">
+                    <iframe class="frame" src="http://shahata.github.io/memory-game/" frameBorder="0" width="600"
+                            height="1000">Loading iframe</iframe>
+                </div>
             </div>
             <div class="table-responsive" ng-show="initialized && started">
                 <table class="table table-striped">
