@@ -72,6 +72,7 @@ And then start normally as described above.
 * Test Claymore ETH dualminer
 * Unit tests
 * Add cryptocurrencies ticking and make profit dashboard
+* Support multiple claymore rigs.
 * Maybe add some sort of Admin UI for configuring some logic and miner-metrics-daemon itself, exporting json.
 
 
