@@ -37,6 +37,7 @@ public class Configuration {
 
         if(environmentVariables != null) {
             for(Map.Entry<String, String> var : environmentVariables){
+                log.info("Imported config variable from environment: " + var.getKey() + " : "  + var.getValue());
                 properties.setProperty(var.getKey(), var.getValue());
             }
         }
