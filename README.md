@@ -85,3 +85,8 @@ $ docker ps
 CONTAINER ID        IMAGE                   COMMAND                  CREATED                  STATUS              PORTS                                        NAMES
 a1dd27929608        cryptaz/miner-metrics   "/bin/sh -c 'sudo -u "   Less than a second ago   Up 1 seconds        0.0.0.0:8080->80/tcp, 0.0.0.0:80->3000/tcp   miner-metrics
 ```
+
+
+# Architect notes
+* All main logs are just symlinked between processes (look at start script)
+* Field card_id in InfluxDB is integer. Don't forget it, if you manually edit dashboards
