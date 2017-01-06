@@ -22,7 +22,7 @@ Tool is highly experimental, I would say it's alpha version, so bugs may appear.
 * Run container for the first time to initialize all services:
 
     ```
-    docker run --name miner-metrics -e CLAYMORE_API_URL='YOUR_CLAYMORE_API_URL' -d -p 80:3000 -p 8070:80 cryptaz/miner-metrics
+    docker run --name miner-metrics -e CLAYMORE_API_URL='YOUR_CLAYMORE_API_URL' -d -p 80:3000 -p 8080:80 cryptaz/miner-metrics
     ```
 
     YOUR_CLAYMORE_API_URL should be url, that points to Claymore miner monitoring port(set up by -mport port).
