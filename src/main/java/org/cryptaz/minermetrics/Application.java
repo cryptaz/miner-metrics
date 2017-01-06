@@ -12,11 +12,11 @@ import java.util.Set;
 
 public class Application {
 
-    private final static Logger logger = Logger.getLogger(Application.class);
+    private final static Logger log = Logger.getLogger(Application.class);
 
     public static void main(String[] args) throws IOException {
         // Set up a simple configuration that logs on the console.
-        logger.info("Loading configuration");
+        log.info("Loading configuration");
 
         //Expect input claymore api url from docker environment
         //claymore_api_url=http://192.168.99.1:30500
@@ -31,7 +31,7 @@ public class Application {
                 environmentVariables.add(var);
             }
             else {
-                logger.warn("Unknown argument!");
+                log.warn("Unknown argument!");
             }
         }
         Configuration configuration;
@@ -42,10 +42,10 @@ public class Application {
             configuration = new Configuration("daemon.properties", null);
         }
         if(args.length > 0) {
-            logger.warn("The miner-metrics daemon does not expect to run with any arguments!");
+            log.warn("The miner-metrics daemon does not expect to run with any arguments!");
         }
-        logger.info("MinerMetrics SNAPSHOT 1.0 started!");
-        logger.trace("Connecting to miners...");
+        log.info("MinerMetrics SNAPSHOT 1.0 started!");
+        log.info("Connecting to miners...");
 
         AsyncTicker asyncTicker = new AsyncTicker(configuration.getProperties());
         Thread thread = new Thread(asyncTicker);

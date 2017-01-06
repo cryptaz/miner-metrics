@@ -33,7 +33,7 @@ public class ClaymoreAPI implements MinerAPI {
     private String claymoreUrl;
     private boolean lastTrySuccessful;
     private boolean connected;
-    private Logger logger = LoggerFactory.getLogger(ClaymoreAPI.class);
+    private Logger log = LoggerFactory.getLogger(ClaymoreAPI.class);
 
     public ClaymoreAPI(String claymoreUrl) {
         this.httpClient = HttpClientBuilder.create().build();
@@ -43,7 +43,7 @@ public class ClaymoreAPI implements MinerAPI {
         this.lastTrySuccessful = true;
         this.connected = false;
         if (claymoreUrl == null) {
-            logger.error("No apiURL set!");
+            log.info("No apiURL set!");
         }
     }
 
@@ -70,17 +70,15 @@ public class ClaymoreAPI implements MinerAPI {
         HttpGet request = new HttpGet(claymoreUrl);
         HttpResponse response = null;
         try {
-            boolean updateTemplate = false;
             if (lastTrySuccessful && !connected) {
-                logger.info("Daemon started. Going to start collecting data from external APIs.");
-                updateTemplate = true;
+                log.info("Daemon started. Going to start collecting data from external APIs.");
             }
             response = httpClient.execute(request);
             int responseCode = response.getStatusLine().getStatusCode();
 
             assert (responseCode == 200);
             if (!connected) {
-                logger.info("Successfully connected to Claymore miner API");
+                log.info("Successfully connected to Claymore miner API");
             }
             connected = true;
             lastTrySuccessful = true;
@@ -99,7 +97,7 @@ public class ClaymoreAPI implements MinerAPI {
                 json = matcher.group(0);
             }
             if (json == null) {
-                logger.error("Json wasn't found in html");
+                log.info("Json wasn't found in html");
                 lastTrySuccessful = false;
                 return null;
             }
@@ -109,7 +107,7 @@ public class ClaymoreAPI implements MinerAPI {
             try {
                 claymoreRawDTO = objectMapper.readValue(json, ClaymoreRawDTO.class);
             } catch (IOException e) {
-                logger.error("Could not parse json!");
+                log.info("Could not parse json!");
                 e.printStackTrace();
                 lastTrySuccessful = false;
                 return null;
@@ -119,7 +117,7 @@ public class ClaymoreAPI implements MinerAPI {
             return claymoreTickDTO;
         } catch (IOException e) {
             //e.printStackTrace();
-            logger.error("Could not get api data for miner (Rejecting sending)");
+            log.info("Could not get api data for miner (Rejecting sending)");
             lastTrySuccessful = false;
             connected = false;
             return null;
@@ -171,12 +169,12 @@ public class ClaymoreAPI implements MinerAPI {
     private void saveTemplate(String json) throws IOException {
         File file = new File("default_dashboards.json");
         if(file.delete()){
-            logger.debug("Template deleted");
+            log.debug("Template deleted");
         }else{
-            logger.debug("Delete template operation is failed.");
+            log.debug("Delete template operation is failed.");
         }
 
-        logger.debug("Saving template to file");
+        log.debug("Saving template to file");
         FileUtils.writeStringToFile(new File("default_dashboards.json"), json);
     }
 }

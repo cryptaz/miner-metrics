@@ -55,7 +55,7 @@ public class AsyncTicker implements Runnable {
     public void run() {
         this.successfulTicks = 0;
         this.failedTicks = 0;
-        log.trace("Async worker started");
+        log.info("Async worker started");
         while (isWorking) {
             DateTime dateTime = new DateTime();
             if (dateTime.getSecondOfMinute() % tickTime == 0) {
@@ -103,7 +103,7 @@ public class AsyncTicker implements Runnable {
 
         } catch (IOException e) {
             e.printStackTrace();
-            log.error("Could not save to file");
+            log.info("Could not save to file");
         }
     }
 }

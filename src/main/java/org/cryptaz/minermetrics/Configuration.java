@@ -30,7 +30,7 @@ public class Configuration {
             InputStream inputStream = new FileInputStream(file);
             properties.load(inputStream);
         } catch (IOException | NullPointerException e) {
-            log.error("Could not load configuration file (IOException). Exiting");
+            log.info("Could not load configuration file (IOException). Exiting");
             System.exit(1);
         }
 
@@ -58,7 +58,7 @@ public class Configuration {
             outputStream.flush();
             outputStream.close();
         } catch (IOException e1) {
-            log.error("Could initiate configuration file, check your permissions. Exiting");
+            log.info("Could initiate configuration file, check your permissions. Exiting");
             System.exit(1);
         }
     }
