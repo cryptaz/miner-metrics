@@ -11,8 +11,6 @@ if [ ! -f /home/metrics/.initialized ]; then
     echo "Preparing nginx (symlinks)" >> /opt/start.sh.log
     rm /var/www/html/index.nginx-debian.html >> /opt/start.sh.log
     echo "{\"initialized\": false, \"started\": false}" > /var/www/html/status.json
-    echo "{\"initialized\": false, \"started\": false}" > /var/www/html/index.html
-    echo "{\"initialized\": false, \"started\": false}" > /var/www/html/daemon_log.html
     ln -s /opt/start.sh.log /var/www/html/startup_log.html >> /opt/start.sh.log
     echo "Starting InfluxDB" >> /opt/start.sh.log
     service influxd start >> /opt/start.sh.log
@@ -20,8 +18,6 @@ if [ ! -f /home/metrics/.initialized ]; then
     influx -execute "create database minermetrics" >> /opt/start.sh.log
 else
     echo "{\"initialized\": true, \"started\": false}" > /var/www/html/status.json
-    echo "{\"initialized\": true, \"started\": false}" > /var/www/html/index.html
-    echo "{\"initialized\": true, \"started\": false}" > /var/www/html/daemon_log.html
     echo "Starting InfluxDB" >> /opt/start.sh.log
     service influxd start >> /opt/start.sh.log
 fi
@@ -33,14 +29,14 @@ echo "Deleting miner-metrics project folder if exits" >> /opt/start.sh.log
 rm -R /home/metrics/miner-metrics >> /opt/start.sh.log
 echo "Cloning from git" >> /opt/start.sh.log
 sudo -u metrics git clone https://github.com/cryptaz/miner-metrics.git /home/metrics/miner-metrics >> /opt/start.sh.log
-echo "Compiling maven-project" >> /opt/start.sh.log
-sudo -u metrics mvn -f /home/metrics/miner-metrics/pom.xml clean install >> /opt/start.sh.log
 rm /var/www/html/index.html >> /opt/start.sh.log
-rm /var/www/html/daemon_log.html >> /opt/start.sh.log
-rm /var/www/html/startup_log.html >> /opt/start.sh.log
+ln -s /home/metrics/miner-metrics/webapp/index.html /var/www/html/index.html
 ln -s /opt/start.sh.log /var/www/html/startup_log.html >> /opt/start.sh.log
+echo "Compiling maven-project" >> /opt/start.sh.log
+echo "Daemon not started" > /home/metrics/miner-metrics/target/daemon.log
+sudo -u metrics mvn -f /home/metrics/miner-metrics/pom.xml clean install >> /opt/start.sh.log
+rm /var/www/html/daemon_log.html >> /opt/start.sh.log
 ln -s /home/metrics/miner-metrics/target/daemon.log /var/www/html/daemon_log.html >> /opt/start.sh.log
-ln -s /home/metrics/miner-metrics/target/default_dashboards.json /var/www/html/index.html >> /opt/start.sh.log
 if [ ! -f /home/metrics/.initialized ]; then
     echo "1" > /home/metrics/.initialized
     chmod 777 /home/metrics/.initialized
