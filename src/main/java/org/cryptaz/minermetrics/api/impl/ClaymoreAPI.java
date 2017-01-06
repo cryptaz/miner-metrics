@@ -7,7 +7,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.cryptaz.minermetrics.TemplateConfigurator;
 import org.cryptaz.minermetrics.api.MinerAPI;
 import org.cryptaz.minermetrics.models.CardTickData;
 import org.cryptaz.minermetrics.models.GeneralTickData;
@@ -35,7 +34,6 @@ public class ClaymoreAPI implements MinerAPI {
     private boolean lastTrySuccessful;
     private boolean connected;
     private Logger logger = LoggerFactory.getLogger(ClaymoreAPI.class);
-    private TemplateConfigurator templateConfigurator;
 
     public ClaymoreAPI(String claymoreUrl) {
         this.httpClient = HttpClientBuilder.create().build();
@@ -44,7 +42,6 @@ public class ClaymoreAPI implements MinerAPI {
         this.claymoreUrl = claymoreUrl;
         this.lastTrySuccessful = true;
         this.connected = false;
-        this.templateConfigurator = new TemplateConfigurator();
         if (claymoreUrl == null) {
             logger.error("No apiURL set!");
         }
@@ -119,15 +116,6 @@ public class ClaymoreAPI implements MinerAPI {
             }
 
             ClaymoreTickDTO claymoreTickDTO = convert(claymoreRawDTO);
-            if(updateTemplate){
-                try {
-                    saveTemplate(templateConfigurator.template(claymoreTickDTO.getGeneralTickData().getCardCount()));
-                }
-                catch (Exception e){
-                    logger.error("Could not make template! Probably IO error.");
-                    e.printStackTrace();
-                }
-            }
             return claymoreTickDTO;
         } catch (IOException e) {
             //e.printStackTrace();
