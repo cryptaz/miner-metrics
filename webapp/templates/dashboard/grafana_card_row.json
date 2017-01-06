@@ -35,7 +35,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "alias": "Hashrate (H/s)",
+              "alias": "Hashrate",
               "dsType": "influxdb",
               "groupBy": [
                 {
@@ -53,8 +53,8 @@
               ],
               "measurement": "card",
               "policy": "default",
-              "query": "",
-              "rawQuery": false,
+              "query": "SELECT mean(\"hashrate\") FROM \"card\" WHERE \"card_id\" = * AND \"miner_url\" = '#' AND $timeFilter GROUP BY time($interval) fill(null)",
+              "rawQuery": true,
               "refId": "A",
               "resultFormat": "time_series",
               "select": [
@@ -73,9 +73,15 @@
               ],
               "tags": [
                 {
-                  "key": "id",
+                  "key": "cardId",
                   "operator": "=",
                   "value": "*"
+                },
+                {
+                  "condition": "AND",
+                  "key": "minerUrl",
+                  "operator": "=",
+                  "value": "#"
                 }
               ]
             }
@@ -195,11 +201,19 @@
               ],
               "tags": [
                 {
-                  "key": "id",
+                  "key": "card_id",
                   "operator": "=",
                   "value": "*"
+                },
+                {
+                  "condition": "AND",
+                  "key": "miner_url",
+                  "operator": "=",
+                  "value": "#"
                 }
-              ]
+              ],
+              "query": "SELECT mean(\"temp\") FROM \"card\" WHERE \"card_id\" = * AND \"miner_url\" = '#' AND $timeFilter GROUP BY time($interval) fill(null)",
+              "rawQuery": true
             }
           ],
           "thresholds": [],
@@ -305,11 +319,19 @@
               ],
               "tags": [
                 {
-                  "key": "id",
+                  "key": "card_id",
                   "operator": "=",
                   "value": "*"
+                },
+                {
+                  "condition": "AND",
+                  "key": "miner_url",
+                  "operator": "=",
+                  "value": "#"
                 }
-              ]
+              ],
+              "query": "SELECT mean(\"fan\") FROM \"card\" WHERE \"card_id\" = * AND \"miner_url\" = '#' AND $timeFilter GROUP BY time($interval) fill(null)",
+              "rawQuery": true
             }
           ],
           "thresholds": [],

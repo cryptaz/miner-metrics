@@ -41,9 +41,9 @@ public class AsyncTicker implements Runnable {
         String claymoreApiUrlBuffer = properties.getProperty("claymore_api_url");
         if (claymoreApiUrlBuffer.contains(";")) {
             String[] claymoresstring = claymoreApiUrlBuffer.split(";");
-            log.info("Found multiple claymore instances" + claymoreApiUrlBuffer);
+            log.info("Found multiple claymore instances (" + claymoresstring.length + ")");
             for (String claymoreUrl : claymoresstring) {
-                log.info("Injecting claymore with endpoint at " + claymoreApiUrlBuffer);
+                log.info("Injecting claymore with endpoint at " + claymoreUrl);
                 this.claymores.add(new ClaymoreAPI(claymoreUrl));
             }
         } else {
@@ -101,7 +101,6 @@ public class AsyncTicker implements Runnable {
             daemonStatus.setStarted(true);
             ObjectMapper objectMapper = new ObjectMapper();
             String json = objectMapper.writeValueAsString(daemonStatus);
-            log.info("Saving json: " + json);
             File file = new File("status.json");
             FileUtils.writeStringToFile(file, json);
 

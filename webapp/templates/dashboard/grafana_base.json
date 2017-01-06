@@ -80,7 +80,7 @@
   },
   "refresh": false,
   "schemaVersion": 13,
-  "version": 2,
+  "version": 4,
   "links": [],
   "gnetId": null,
   "rows": [
@@ -160,7 +160,13 @@
                   }
                 ]
               ],
-              "tags": []
+              "tags": [
+                {
+                  "key": "miner_url",
+                  "operator": "=",
+                  "value": "#"
+                }
+              ]
             }
           ],
           "thresholds": "",
@@ -239,7 +245,7 @@
               "measurement": "general",
               "policy": "default",
               "query": "SELECT mean(\"accepted_shares\") FROM \"general\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
-              "rawQuery": true,
+              "rawQuery": false,
               "refId": "A",
               "resultFormat": "time_series",
               "select": [
@@ -256,7 +262,13 @@
                   }
                 ]
               ],
-              "tags": []
+              "tags": [
+                {
+                  "key": "miner_url",
+                  "operator": "=",
+                  "value": "#"
+                }
+              ]
             }
           ],
           "thresholds": [],
@@ -343,7 +355,13 @@
                   }
                 ]
               ],
-              "tags": []
+              "tags": [
+                {
+                  "key": "miner_url",
+                  "operator": "=",
+                  "value": "#"
+                }
+              ]
             }
           ],
           "thresholds": [],
@@ -444,7 +462,7 @@
               "measurement": "general",
               "policy": "default",
               "query": "SELECT mean(\"overall_hashrate\") FROM \"general\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
-              "rawQuery": true,
+              "rawQuery": false,
               "refId": "A",
               "resultFormat": "time_series",
               "select": [
@@ -461,7 +479,13 @@
                   }
                 ]
               ],
-              "tags": []
+              "tags": [
+                {
+                  "key": "miner_url",
+                  "operator": "=",
+                  "value": "#"
+                }
+              ]
             }
           ],
           "thresholds": [],
@@ -509,5 +533,6 @@
       "repeatIteration": null,
       "collapse": false
     }
-  ]
+  ],
+  "editMode": false
 }

@@ -61,11 +61,6 @@ public class ClaymoreAPI implements MinerAPI {
         return tickDTO;
     }
 
-    @Override
-    public String getUrl() {
-        return claymoreUrl;
-    }
-
     private ClaymoreTickDTO getData() {
         HttpGet request = new HttpGet(claymoreUrl);
         HttpResponse response = null;
@@ -152,6 +147,7 @@ public class ClaymoreAPI implements MinerAPI {
         generalTickData.setAcceptedShares(Long.parseLong(statBuffer[1]));
         generalTickData.setRejectedShares(Long.parseLong(statBuffer[2]));
         generalTickData.setPoolUrl(poolUrl);
+        generalTickData.setMinerUrl(this.getUrl());
 
         for (int i = 0; i < cardCount; i++) {
             CardTickData cardTickData = new CardTickData();
@@ -176,5 +172,10 @@ public class ClaymoreAPI implements MinerAPI {
 
         log.debug("Saving template to file");
         FileUtils.writeStringToFile(new File("default_dashboards.json"), json);
+    }
+
+    @Override
+    public String getUrl() {
+        return claymoreUrl;
     }
 }

@@ -21,6 +21,7 @@ angular.module('minerMetricsApp')
 
 
         $scope.generateDashboard = function (id) {
+            $scope.template = null;
             if($scope.claymores[id] == null){
                 alert('No claymores defined');
                 return;
@@ -34,6 +35,7 @@ angular.module('minerMetricsApp')
             }).then(function (response) {
                 console.log(response);
                 var baseTemplateJson = response.data;
+                baseTemplateJson = baseTemplateJson.replace(/#/g, $scope.claymores[id].url);
                 var baseTemplate = JSON.parse(baseTemplateJson);
                 $http({
                     url: 'templates/dashboard/grafana_card_row.json',
@@ -41,10 +43,12 @@ angular.module('minerMetricsApp')
                     transformResponse: undefined
                 }).then(function (response) {
                     var cardTemplateJson = response.data;
-                    console.log(cardTemplateJson);
+                    console.log($scope.claymores[id]);
                     for(var i=0;i<$scope.claymores[id].cardCount;i++) {
-                        var cardTemplate = JSON.parse(cardTemplateJson.replace("*", id));
-                        cardTemplate.forEach(function (template) {
+                        var replaced = cardTemplateJson.replace(/\*/g, i);
+                        replaced = replaced.replace(/#/g, $scope.claymores[id].url);
+                        var cardTemplate = JSON.parse(replaced);
+                        cardTemplate.rows.forEach(function (template) {
                             baseTemplate.rows.push(template);
                         });
                         $scope.template = JSON.stringify(baseTemplate);
