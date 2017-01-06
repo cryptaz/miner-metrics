@@ -22,12 +22,14 @@ docker pull cryptaz/miner-metrics
 * Run container for the first time to initialize all services:
 
     ```
-docker run --name miner-metrics -e CLAYMORE_API_URL='YOUR_CLAYMORE_API_URL' -d -p 80:3000 -p 8080:80 cryptaz/miner-metrics
+docker run --name miner-metrics -e CLAYMORE_API_URL='YOUR_CLAYMORES_API_URL' -d -p 80:3000 -p 8080:80 cryptaz/miner-metrics
     ```
 
-    YOUR_CLAYMORE_API_URL should be url, that points to Claymore miner monitoring port(set up by -mport port).
+    YOUR_CLAYMORES_API_URL should be url, that points to Claymore miner monitoring port(set up by -mport port).
     URL should point on the docker's host interface(virtualbox host-only), so obtain it through ```ipconfig /all``` (or ```ip addr``` if on Linux)
     Mine was 192.168.99.1, so my url looked like this ```http://192.168.99.1:30500```
+    If you have multiple claymore instances(for example few rigs), you can list them in string delimited with ```;```
+    For example: ```http://192.168.99.1:30500;http://192.168.99.1:30501```
 * Open http://192.168.99.100 and login via admin:admin
 * Open Data Sources
 * Add new data source with name ```influx```, type ```InfluxDB```, url ```http://127.0.0.1:8086```, database ```minermetrics```, user ```root```, password ```root```
