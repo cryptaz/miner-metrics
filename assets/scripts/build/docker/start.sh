@@ -52,7 +52,5 @@ ln -s /home/metrics/miner-metrics/target/daemon.log /var/www/html/daemon_log.htm
 #FIXME add check for claymore api url is set
 echo "Successfully compiled project, starting daemon." >> /opt/start.sh.log 2>> /opt/start.sh.log
 rm /var/www/html/status.json >> /opt/start.sh.log 2>> /opt/start.sh.log
-chmod 777 /home/metrics/miner-metrics/target/status.json>> /opt/start.sh.log 2>> /opt/start.sh.log
-chmod 777 /var/www/html/status.json >> /opt/start.sh.log 2>> /opt/start.sh.log
 ln -s /home/metrics/miner-metrics/target/status.json /var/www/html/status.json >> /opt/start.sh.log 2>> /opt/start.sh.log
-sudo -u metrics /bin/bash -c "cd /home/metrics/miner-metrics/target && java -jar minermetrics-1.0-SNAPSHOT-jar-with-dependencies.jar > miner-metrics.stdout 2>&1"
+sudo -u metrics /bin/bash -c "cd /home/metrics/miner-metrics/target && java -jar minermetrics-1.0-SNAPSHOT-jar-with-dependencies.jar > miner-metrics.stdout claymore_api_url=$CLAYMORE_API_URL 2>&1"

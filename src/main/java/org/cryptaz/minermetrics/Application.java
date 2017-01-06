@@ -20,7 +20,6 @@ public class Application {
         log.info("Loading configuration");
 
         //Expect input claymore api url from docker environment
-        //claymore_api_url=http://192.168.99.1:30500
         Set<Map.Entry<String,String>> environmentVariables = new HashSet<>();
         assert(environmentVariables.size() == 0);
         for(String arg : args) {
@@ -29,6 +28,13 @@ public class Application {
                 Map.Entry<String,String> var =
                         new AbstractMap.SimpleEntry<String, String>
                                 ("claymore_api_url", arg.replaceAll("claymore_api_url=", ""));
+                if(arg.split(";").length>1) {
+                    log.info("Detected multiple claymore instances with endpoints:");
+                    String[] urls = arg.split(";");
+                    for(String endpoint: urls) {
+                        log.info(endpoint);
+                    }
+                }
                 environmentVariables.add(var);
             }
             else {
