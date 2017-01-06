@@ -89,5 +89,3 @@ a1dd27929608        cryptaz/miner-metrics   "/bin/sh -c 'sudo -u "   Less than a
 
 If daemon did not start, check miner-metrics.stdout for any error messages(appears in your current directory).
 
-
-#Architect
