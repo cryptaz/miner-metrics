@@ -31,16 +31,14 @@ docker run --name miner-metrics -e CLAYMORE_API_URL='YOUR_CLAYMORE_API_URL' -d -
 * Open http://192.168.99.100 and login via admin:admin
 * Open Data Sources
 * Add new data source with name ```influx```, type ```InfluxDB```, url ```http://127.0.0.1:8086```, database ```minermetrics```, user ```root```, password ```root```
-* When application is finally initialized and started, the basic dashboard template (JSON) will be accessible on the http://192.168.99.100:8070. This template will regenerate when claymore restarts. You can watch startup process at http://192.168.99.100:8070/startup_log.html. For pretty print you can open raw HTML (ctrl + U) or download the page.
-* In dashboards, click import and paste that JSON into textarea, choose datasource - influx db and apply
+* Go to http://192.168.99.100:8080 and wait until all services is initialized. Then generate dashboards for your claymores. You also can watch startup process and logs on the http://192.168.99.100:8080/startup_log.htmlFor pretty print you can open raw HTML (ctrl + U) or download the page.
+* In dashboards, click import and paste that JSON into textarea, enter name, choose datasource influx and apply
 * Congratulations! You set up the metrics. Don't forget to choose time range.
 
 # Usage
 
 * To open metrics, simply open http://192.168.99.100
-* To generate new dashboard(for example, if you added new card), simply open http://192.168.99.100:8070
-* To watch startup log open http://192.168.99.100:8070/startup_log.html (when docker container starts)
-* To watch daemon log open http://192.168.99.100:8070/daemon_log.html (main service, which ticks data into database)
+* To generate new dashboard(for example, if you added new card), simply open http://192.168.99.100:8080
 
 * To start container:
 
@@ -85,5 +83,5 @@ You should see something like this:
 ```
 $ docker ps
 CONTAINER ID        IMAGE                   COMMAND                  CREATED                  STATUS              PORTS                                        NAMES
-a1dd27929608        cryptaz/miner-metrics   "/bin/sh -c 'sudo -u "   Less than a second ago   Up 1 seconds        0.0.0.0:8070->80/tcp, 0.0.0.0:80->3000/tcp   miner-metrics
+a1dd27929608        cryptaz/miner-metrics   "/bin/sh -c 'sudo -u "   Less than a second ago   Up 1 seconds        0.0.0.0:8080->80/tcp, 0.0.0.0:80->3000/tcp   miner-metrics
 ```

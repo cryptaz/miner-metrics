@@ -1,11 +1,18 @@
 package org.cryptaz.minermetrics.async;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.cryptaz.minermetrics.InfluxWriter;
 import org.cryptaz.minermetrics.api.impl.ClaymoreAPI;
+import org.cryptaz.minermetrics.models.ClaymoreInstanceInfo;
+import org.cryptaz.minermetrics.models.DaemonStatus;
 import org.cryptaz.minermetrics.models.dto.ClaymoreTickDTO;
+import org.cryptaz.minermetrics.models.dto.TickDTO;
 import org.joda.time.DateTime;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -52,7 +59,7 @@ public class AsyncTicker implements Runnable {
         while (isWorking) {
             DateTime dateTime = new DateTime();
             if (dateTime.getSecondOfMinute() % tickTime == 0) {
-                for(ClaymoreAPI claymoreAPI: claymores) {
+                for (ClaymoreAPI claymoreAPI : claymores) {
                     ClaymoreTickDTO tickDTO = claymoreAPI.tick();
                     if (tickDTO == null) {
                         failedTicks++;
@@ -64,12 +71,39 @@ public class AsyncTicker implements Runnable {
                         continue;
                     }
                     successfulTicks++;
+                    saveStatus(tickDTO);
                 }
             }
             if (lastNotified == null || new DateTime().minusMinutes(notificationTime).isAfter(lastNotified)) {
                 lastNotified = dateTime;
                 log.info("Processed " + (successfulTicks + failedTicks) + " ticks [" + (successfulTicks + failedTicks) + " successful; " + failedTicks + " failed]");
             }
+        }
+    }
+
+    private void saveStatus(TickDTO tickDTO) {
+        try {
+            DaemonStatus daemonStatus = new DaemonStatus();
+            List<ClaymoreInstanceInfo> list = new ArrayList<>();
+            for(ClaymoreAPI claymoreAPI : claymores) {
+                ClaymoreInstanceInfo claymoreInstanceInfo = new ClaymoreInstanceInfo();
+                claymoreInstanceInfo.setCardCount(tickDTO.getCardTickDatas().size());
+                claymoreInstanceInfo.setUrl(claymoreAPI.getUrl());
+                list.add(claymoreInstanceInfo);
+            }
+            daemonStatus.setClaymores(list);
+            daemonStatus.setSuccessfulTicks(successfulTicks);
+            daemonStatus.setFailedTicks(failedTicks);
+            daemonStatus.setInitialized(true);
+            daemonStatus.setStarted(true);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writeValueAsString(daemonStatus);
+            File file = new File("status.json");
+            FileUtils.writeStringToFile(file, json);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("Could not save to file");
         }
     }
 }

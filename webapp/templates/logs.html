@@ -1,0 +1,25 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a ui-sref="main">Main interface</a>
+                </li>
+                <li class="active"><a ui-sref="logs">Logs</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-offset-3 col-md-10 main">
+            <h2 class="page-header">Logs</h2>
+
+            <div class="row placeholders">
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <button class="btn btn-xl btn-success" ng-click="showLog('startup')">Startup</button>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <button class="btn btn-xl btn-warning" ng-click="showLog('daemon')">Daemon</button>
+                </div>
+            </div>
+            <pre ng-show="log" style="width: 80%">{{log}}</pre>
+        </div>
+
+    </div>
+</div>

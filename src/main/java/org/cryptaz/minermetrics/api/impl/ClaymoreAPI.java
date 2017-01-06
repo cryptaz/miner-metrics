@@ -18,7 +18,10 @@ import org.joda.time.Period;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -59,6 +62,11 @@ public class ClaymoreAPI implements MinerAPI {
         }
         tickDTO.setDateTime(new DateTime());
         return tickDTO;
+    }
+
+    @Override
+    public String getUrl() {
+        return claymoreUrl;
     }
 
     private ClaymoreTickDTO getData() {

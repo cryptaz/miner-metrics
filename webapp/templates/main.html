@@ -2,10 +2,9 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li class="active"><a href="http://getbootstrap.com/examples/dashboard/#">Main interface<span
-                        class="sr-only">(current)</span></a>
+                <li class="active"><a ui-sref="main">Main interface</a>
                 </li>
-                <li><a href="http://getbootstrap.com/examples/dashboard/#">Logs</a></li>
+                <li><a ui-sref="logs">Logs</a></li>
             </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -41,19 +40,27 @@
                     <tr>
                         <th>#</th>
                         <th>URL</th>
+                        <th>Count of cards</th>
                         <th style="text-align: right">Template</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeate="instance in claymores">
+                    <tr ng-repeat="instance in claymores">
                         <td>{{$index}}</td>
                         <td>{{instance.url}}</td>
+                        <td>{{instance.cardCount}}</td>
                         <td style="text-align: right">
-                            <button class="btn btn-xs btn-success">Generate dashboard</button>
+                            <button class="btn btn-xs btn-success" ng-click="generateDashboard($index)">Generate
+                                dashboard
+                            </button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+            </div>
+            <div ng-show="template">
+                <h3>Generated dashboard:</h3>
+                <pre>{{template}}</pre>
             </div>
         </div>
     </div>
