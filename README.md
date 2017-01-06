@@ -61,10 +61,8 @@ docker run --name miner-metrics -e CLAYMORE_API_URL='YOUR_CLAYMORES_API_URL' -d 
 # Build
 I have attached building scripts in my repo(assets/scripts/build/docker), so you can compile image by yourself. I'm building and pushing image from this folder.
 * Just clone repo, move into folder and build(assuming you are in root repository folder):<br />
-    ```
-    cd assets/scripts/build/docker/
-    docker build -t cryptaz/miner-metrics .
-    ```
+    ```cd assets/scripts/build/docker/```
+    ```docker build -t cryptaz/miner-metrics .```
 And then start normally as described above.
 
 # TODO
