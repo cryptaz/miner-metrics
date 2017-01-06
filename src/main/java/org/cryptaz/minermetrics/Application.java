@@ -3,6 +3,7 @@ package org.cryptaz.minermetrics;
 
 import org.apache.log4j.Logger;
 import org.cryptaz.minermetrics.async.AsyncTicker;
+import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.util.AbstractMap;
@@ -39,7 +40,13 @@ public class Application {
              configuration = new Configuration("daemon.properties", environmentVariables);
         }
         else {
-            configuration = new Configuration("daemon.properties", null);
+            while(true) {
+
+                DateTime dateTime = new DateTime();
+                if (dateTime.getSecondOfMinute() % 5 == 0) {
+                    log.info("Docker container was called without required environment variables! Reinitialise container with proper values!");
+                }
+            }
         }
         if(args.length > 0) {
             log.warn("The miner-metrics daemon does not expect to run with any arguments!");
