@@ -80,7 +80,7 @@
   },
   "refresh": false,
   "schemaVersion": 13,
-  "version": 30,
+  "version": 2,
   "links": [],
   "gnetId": null,
   "rows": [
@@ -395,107 +395,110 @@
       "title": "Dashboard Row",
       "panels": [
         {
-          "id": 10,
-          "title": "Overall hashrate",
-          "error": false,
-          "span": 12,
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_INFLUX}",
           "editable": true,
-          "type": "graph",
+          "error": false,
+          "fill": 1,
+          "id": 10,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 12,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
-              "policy": "default",
+              "alias": "Overall hashrate",
               "dsType": "influxdb",
-              "resultFormat": "time_series",
-              "tags": [],
               "groupBy": [
                 {
-                  "type": "time",
                   "params": [
                     "$interval"
-                  ]
+                  ],
+                  "type": "time"
                 },
                 {
-                  "type": "fill",
                   "params": [
                     "null"
-                  ]
+                  ],
+                  "type": "fill"
                 }
               ],
+              "measurement": "general",
+              "policy": "default",
+              "query": "SELECT mean(\"overall_hashrate\") FROM \"general\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
               "select": [
                 [
                   {
-                    "type": "field",
                     "params": [
                       "overall_hashrate"
-                    ]
+                    ],
+                    "type": "field"
                   },
                   {
-                    "type": "mean",
-                    "params": []
+                    "params": [],
+                    "type": "mean"
                   }
                 ]
               ],
-              "refId": "A",
-              "measurement": "general"
+              "tags": []
             }
           ],
-          "datasource": "${DS_INFLUX}",
-          "renderer": "flot",
-          "yaxes": [
-            {
-              "label": null,
-              "show": true,
-              "logBase": 1,
-              "min": null,
-              "max": null,
-              "format": "short"
-            },
-            {
-              "label": null,
-              "show": true,
-              "logBase": 1,
-              "min": null,
-              "max": null,
-              "format": "short"
-            }
-          ],
-          "xaxis": {
-            "show": true,
-            "mode": "time",
-            "name": null,
-            "values": []
-          },
-          "lines": true,
-          "fill": 1,
-          "linewidth": 1,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "percentage": false,
-          "legend": {
-            "show": true,
-            "values": false,
-            "min": false,
-            "max": false,
-            "current": false,
-            "total": false,
-            "avg": false
-          },
-          "nullPointMode": "connected",
-          "steppedLine": false,
-          "tooltip": {
-            "value_type": "individual",
-            "shared": true,
-            "sort": 0,
-            "msResolution": false
-          },
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "aliasColors": {},
-          "seriesOverrides": [],
-          "thresholds": [],
-          "links": []
+          "title": "Overall hashrate",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
         }
       ],
       "showTitle": false,
