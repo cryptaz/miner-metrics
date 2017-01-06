@@ -42,6 +42,7 @@ public class AsyncTicker implements Runnable {
         if (claymoreApiUrlBuffer.contains(";")) {
             String[] claymoresstring = claymoreApiUrlBuffer.split(";");
             for (String claymoreUrl : claymoresstring) {
+                log.info("Injecting claymore with endpoint at " + claymoreApiUrlBuffer);
                 this.claymores.add(new ClaymoreAPI(claymoreUrl));
             }
         } else {

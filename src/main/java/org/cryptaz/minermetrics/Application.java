@@ -55,9 +55,6 @@ public class Application {
                 }
             }
         }
-        if(args.length > 0) {
-            log.warn("The miner-metrics daemon does not expect to run with any arguments!");
-        }
         log.info("MinerMetrics SNAPSHOT 1.0 started!");
         log.info("Connecting to miners...");
 
