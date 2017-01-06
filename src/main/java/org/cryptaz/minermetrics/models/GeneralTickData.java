@@ -18,7 +18,7 @@ public class GeneralTickData extends TickData{
 
     private int cardCount;
 
-    private String workerName;
+    private String minerUrl;
 
     public String getVersion() {
         return version;
@@ -76,4 +76,11 @@ public class GeneralTickData extends TickData{
         this.cardCount = cardCount;
     }
 
+    public String getMinerUrl() {
+        return minerUrl;
+    }
+
+    public void setMinerUrl(String minerUrl) {
+        this.minerUrl = minerUrl;
+    }
 }

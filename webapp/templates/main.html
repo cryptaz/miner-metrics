@@ -1,0 +1,60 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li class="active"><a href="http://getbootstrap.com/examples/dashboard/#">Main interface<span
+                        class="sr-only">(current)</span></a>
+                </li>
+                <li><a href="http://getbootstrap.com/examples/dashboard/#">Logs</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h2 class="page-header">Health check</h2>
+
+            <div class="row placeholders">
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>Initialized</h4>
+                    <span class="text-muted">{{initialized}}</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>Started</h4>
+                    <span class="text-muted">{{initialized}}</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>Version</h4>
+                    <span class="text-muted">1.0-SNAPSHOT</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4>Updates</h4>
+                    <span class="text-muted">Up-to-date</span>
+                </div>
+            </div>
+
+            <h2 class="sub-header">Claymore instances</h2>
+
+            <div class="table-responsive" ng-show="!initialized || !started">
+                Still loading... Wait until application starts
+            </div>
+            <div class="table-responsive" ng-show="initialized && started">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>URL</th>
+                        <th style="text-align: right">Template</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeate="instance in claymores">
+                        <td>{{$index}}</td>
+                        <td>{{instance.url}}</td>
+                        <td style="text-align: right">
+                            <button class="btn btn-xs btn-success">Generate dashboard</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

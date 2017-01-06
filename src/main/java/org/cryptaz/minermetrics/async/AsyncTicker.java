@@ -2,11 +2,12 @@ package org.cryptaz.minermetrics.async;
 
 import org.apache.log4j.Logger;
 import org.cryptaz.minermetrics.InfluxWriter;
-import org.cryptaz.minermetrics.api.MinerAPI;
 import org.cryptaz.minermetrics.api.impl.ClaymoreAPI;
 import org.cryptaz.minermetrics.models.dto.ClaymoreTickDTO;
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class AsyncTicker implements Runnable {
@@ -15,7 +16,6 @@ public class AsyncTicker implements Runnable {
 
 
     private boolean isWorking = true;
-    private MinerAPI minerAPI;
     private InfluxWriter influxWriter;
     private long successfulTicks;
     private long failedTicks;
@@ -24,12 +24,23 @@ public class AsyncTicker implements Runnable {
     private String claymoreApiUrl;
     private Properties properties;
     private DateTime lastNotified;
+    private List<ClaymoreAPI> claymores;
 
     public AsyncTicker(Properties properties) {
         this.properties = properties;
         this.tickTime = Integer.parseInt(properties.getProperty("tick_poll_time"));
         this.notificationTime = Integer.parseInt(properties.getProperty("stat_notification_time"));
-        this.claymoreApiUrl = properties.getProperty("claymore_api_url");
+        this.claymores = new ArrayList<>();
+        String claymoreApiUrlBuffer = properties.getProperty("claymore_api_url");
+        if (claymoreApiUrlBuffer.contains(";")) {
+            String[] claymoresstring = claymoreApiUrlBuffer.split(";");
+            for (String claymoreUrl : claymoresstring) {
+                this.claymores.add(new ClaymoreAPI(claymoreUrl));
+            }
+        } else {
+            this.claymores.add(new ClaymoreAPI(claymoreApiUrlBuffer));
+        }
+        influxWriter = new InfluxWriter(properties);
         this.lastNotified = null;
     }
 
@@ -38,23 +49,22 @@ public class AsyncTicker implements Runnable {
         this.successfulTicks = 0;
         this.failedTicks = 0;
         log.trace("Async worker started");
-        minerAPI = new ClaymoreAPI(claymoreApiUrl);
-        influxWriter = new InfluxWriter(properties);
-
         while (isWorking) {
             DateTime dateTime = new DateTime();
             if (dateTime.getSecondOfMinute() % tickTime == 0) {
-                ClaymoreTickDTO tickDTO = minerAPI.tick();
-                if (tickDTO == null) {
-                    failedTicks++;
-                    continue;
+                for(ClaymoreAPI claymoreAPI: claymores) {
+                    ClaymoreTickDTO tickDTO = claymoreAPI.tick();
+                    if (tickDTO == null) {
+                        failedTicks++;
+                        continue;
+                    }
+                    boolean wrote = influxWriter.writeClaymoreTick(tickDTO);
+                    if (!wrote) {
+                        failedTicks++;
+                        continue;
+                    }
+                    successfulTicks++;
                 }
-                boolean wrote = influxWriter.writeClaymoreTick(tickDTO);
-                if (!wrote) {
-                    failedTicks++;
-                    continue;
-                }
-                successfulTicks++;
             }
             if (lastNotified == null || new DateTime().minusMinutes(notificationTime).isAfter(lastNotified)) {
                 lastNotified = dateTime;
