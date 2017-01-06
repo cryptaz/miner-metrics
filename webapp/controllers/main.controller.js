@@ -44,7 +44,9 @@ angular.module('minerMetricsApp')
                     console.log(cardTemplateJson);
                     for(var i=0;i<$scope.claymores[id].cardCount;i++) {
                         var cardTemplate = JSON.parse(cardTemplateJson.replace("*", id));
-                        baseTemplate.rows.push(cardTemplate);
+                        cardTemplate.forEach(function (template) {
+                            baseTemplate.rows.push(template);
+                        });
                         $scope.template = JSON.stringify(baseTemplate);
                     }
 
