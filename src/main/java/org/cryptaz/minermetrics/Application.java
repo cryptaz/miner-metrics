@@ -15,7 +15,7 @@ public class Application {
 
     private final static Logger log = Logger.getLogger(Application.class);
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         // Set up a simple configuration that logs on the console.
         log.info("Loading configuration");
 
@@ -45,6 +45,7 @@ public class Application {
                 DateTime dateTime = new DateTime();
                 if (dateTime.getSecondOfMinute() % 5 == 0) {
                     log.info("Docker container was called without required environment variables! Reinitialise container with proper values!");
+                    Thread.sleep(1000);
                 }
             }
         }
