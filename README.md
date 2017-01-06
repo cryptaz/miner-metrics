@@ -16,13 +16,13 @@ Tool is highly experimental, I would say it's alpha version, so bugs may appear.
 * Open Docker Quickstart terminal, remember the ip, assigned to docker (usually, 192.168.99.100, so I will be using it below), and type:
 
     ```
-    docker pull cryptaz/miner-metrics
+docker pull cryptaz/miner-metrics
     ```
 * Patiently wait until image is downloading. It may take up to 30 minutes.
 * Run container for the first time to initialize all services:
 
     ```
-    docker run --name miner-metrics -e CLAYMORE_API_URL='YOUR_CLAYMORE_API_URL' -d -p 80:3000 -p 8080:80 cryptaz/miner-metrics
+docker run --name miner-metrics -e CLAYMORE_API_URL='YOUR_CLAYMORE_API_URL' -d -p 80:3000 -p 8080:80 cryptaz/miner-metrics
     ```
 
     YOUR_CLAYMORE_API_URL should be url, that points to Claymore miner monitoring port(set up by -mport port).
@@ -45,25 +45,25 @@ Tool is highly experimental, I would say it's alpha version, so bugs may appear.
 * To start container:
 
     ```
-        docker start miner-metrics
+    docker start miner-metrics
     ```
 * To stop container:
 
     ```
-        docker stop miner-metrics
+    docker stop miner-metrics
     ```
 * To remove container(deletes all data):
 
     ```
-        docker rm miner-metrics
+    docker rm miner-metrics
     ```
 
 # Build
 I have attached building scripts in my repo(assets/scripts/build/docker), so you can compile image by yourself. I'm building and pushing image from this folder.
 * Just clone repo, move into folder and build(assuming you are in root repository folder):
     ```
-    cd assets/scripts/build/docker/
-    docker build -t cryptaz/miner-metrics .
+cd assets/scripts/build/docker/
+docker build -t cryptaz/miner-metrics .
     ```
 And then start normally as described above.
 
@@ -78,7 +78,7 @@ And then start normally as described above.
 # Troubleshooting
 Some places where to find out what's going on. Firstly, ensure that container started by typing
     ```
-    docker ps
+docker ps
     ```
 You should see something like this:
 ```
