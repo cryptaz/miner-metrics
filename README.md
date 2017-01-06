@@ -33,7 +33,7 @@ docker run --name miner-metrics -e CLAYMORE_API_URL='YOUR_CLAYMORES_API_URL' -d 
 * Open http://192.168.99.100 and login via admin:admin
 * Open Data Sources
 * Add new data source with name ```influx```, type ```InfluxDB```, url ```http://127.0.0.1:8086```, database ```minermetrics```, user ```root```, password ```root```
-* Go to http://192.168.99.100:8080 and wait until all services is initialized. Then generate dashboards for your claymores. You also can watch startup process and logs on the http://192.168.99.100:8080/startup_log.htmlFor pretty print you can open raw HTML (ctrl + U) or download the page.
+* Go to http://192.168.99.100:8080 and wait until all services is initialized. Then generate dashboards for your claymores. You also can watch startup process and logs on the http://192.168.99.100:8080. To pretty print you can open raw HTML (ctrl + U) or download the page.
 * In dashboards, click import and paste that JSON into textarea, enter name, choose datasource influx and apply
 * Congratulations! You set up the metrics. Don't forget to choose time range.
 

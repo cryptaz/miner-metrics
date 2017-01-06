@@ -98,6 +98,7 @@ public class AsyncTicker implements Runnable {
             daemonStatus.setStarted(true);
             ObjectMapper objectMapper = new ObjectMapper();
             String json = objectMapper.writeValueAsString(daemonStatus);
+            log.info("Saving json: " + json);
             File file = new File("status.json");
             FileUtils.writeStringToFile(file, json);
 

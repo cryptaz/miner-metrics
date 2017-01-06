@@ -24,6 +24,7 @@ public class Configuration {
             log.info("No config file found! Creating default");
             initFile(path);
         }
+
         this.properties = new Properties();
         try {
             file = new File(path);

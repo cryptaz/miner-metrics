@@ -28,7 +28,7 @@ angular.module('minerMetricsApp')
                     $scope.log = response.data
                 }, function (error) {
                     $scope.log = false;
-                    alert('Error during log opening. Possibly miner-metrics not started. If so, just wait for application to start (or jump into Docker and watch by yourself).');
+                    alert('Error during log opening. Possibly miner-metrics not started. If so, just wait for application to start (or jump into Docker and watch logs by yourself).');
                 })
             }
             return;

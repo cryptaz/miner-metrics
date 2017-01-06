@@ -79,9 +79,7 @@ public class InfluxWriter {
             influxDB.write(batchPoints);
         } catch (Exception e) {
             log.info("Could not write to InfluxDB. Possibly database is not accessible!");
-            if (log.isDebugEnabled()) {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
             return false;
         }
         return true;
