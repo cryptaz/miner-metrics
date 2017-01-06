@@ -28,11 +28,10 @@ Tool is highly experimental, I would say it's alpha version, so bugs may appear.
     YOUR_CLAYMORE_API_URL should be url, that points to Claymore miner monitoring port(set up by -mport port).
     URL should point on the docker's host interface(virtualbox host-only), so obtain it through ```ipconfig /all``` (or ```ip addr``` if on Linux)
     Mine was 192.168.99.1, so my url looked like this ```http://192.168.99.1:30500```
-
 * Open http://192.168.99.100 and login via admin:admin
 * Open Data Sources
 * Add new data source with name ```influx```, type ```InfluxDB```, url ```http://127.0.0.1:8086```, database ```minermetrics```, user ```root```, password ```root```
-* When application is finally initialized and started, the basic dashboard template (JSON) will be accessible on the http://192.168.99.100:8070
+* When application is finally initialized and started, the basic dashboard template (JSON) will be accessible on the http://192.168.99.100:8070. This template will regenerate when claymore restarts. You can watch startup process at http://192.168.99.100:8070/startup_log.html. For pretty print you can open raw HTML (ctrl + U) or download the page.
 * In dashboards, click import and paste that JSON into textarea, choose datasource - influx db and apply
 * Congratulations! You set up the metrics. Don't forget to choose time range.
 
@@ -43,19 +42,24 @@ Tool is highly experimental, I would say it's alpha version, so bugs may appear.
 * To watch startup log open http://192.168.99.100:8070/startup_log.html (when docker container starts)
 * To watch daemon log open http://192.168.99.100:8070/daemon_log.html (main service, which ticks data into database)
 
-* To start the container:
+* To start container:
 
     ```
         docker start miner-metrics
     ```
-* To stop the container:
+* To stop container:
 
     ```
         docker stop miner-metrics
     ```
+* To remove container(deletes all data):
+
+    ```
+        docker rm miner-metrics
+    ```
 
 # Build
-I have attached building scripts in my repo(assets/scripts/build/docker), so you can compile image by yourself.
+I have attached building scripts in my repo(assets/scripts/build/docker), so you can compile image by yourself. I'm building and pushing image from this folder.
 * Just clone repo, move into folder and build(assuming you are in root repository folder):
     ```
     cd assets/scripts/build/docker/
@@ -64,7 +68,7 @@ I have attached building scripts in my repo(assets/scripts/build/docker), so you
 And then start normally as described above.
 
 # TODO
-* Rid out of too much debug output
+* Make better log and debug output. Configure level, streams, and make a web page for logs.
 * Test Claymore ETH dualminer
 * Unit tests
 * Add cryptocurrencies ticking and make profit dashboard
@@ -84,3 +88,6 @@ a1dd27929608        cryptaz/miner-metrics   "/bin/sh -c 'sudo -u "   Less than a
 ```
 
 If daemon did not start, check miner-metrics.stdout for any error messages(appears in your current directory).
+
+
+#Architect
