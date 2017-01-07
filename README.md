@@ -8,6 +8,10 @@ Tool is highly experimental, I would say it's alpha version, so bugs may appear.
 
 ![Dashboard](/assets/images/dashboard_sample.png?raw=true "Demo")
 
+# Features
+* Fancy metrics by Grafana
+* Multiple Claymore instances supported(for multiple rigs)
+
 # Requirements
 * Docker Toolbox (https://www.docker.com/products/docker-toolbox)
 * Latest Claymore ZEC miner (eth miner should be supported too, but I did not tested it)
@@ -61,17 +65,15 @@ docker run --name miner-metrics -e CLAYMORE_API_URL='YOUR_CLAYMORES_API_URL' -d 
 # Build
 I have attached building scripts in my repo(assets/scripts/build/docker), so you can compile image by yourself. I'm building and pushing image from this folder.
 * Just clone repo, move into folder and build(assuming you are in root repository folder):<br />
-    ```cd assets/scripts/build/docker/```
+    ```cd assets/scripts/build/docker/``` <br />
     ```docker build -t cryptaz/miner-metrics .```
 And then start normally as described above.
 
 # TODO
-* Make better log and debug output. Configure level, streams, and make a web page for logs.
 * Test Claymore ETH dualminer
 * Unit tests
 * Add cryptocurrencies ticking and make profit dashboard
-* Support multiple claymore rigs.
-* Maybe add some sort of Admin UI for configuring some logic and miner-metrics-daemon itself, exporting json.
+* Extend management interface (Web UI)
 
 
 # Troubleshooting
