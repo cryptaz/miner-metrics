@@ -37,7 +37,7 @@ if [ -d /home/metrics/miner-metrics ]; then
     rm -R /home/metrics/miner-metrics >> /opt/start.sh.log 2>> /opt/start.sh.log
 fi
 echo "Cloning from git" >> /opt/start.sh.log 2>> /opt/start.sh.log
-git clone https://github.com/cryptaz/miner-metrics.git /home/metrics/miner-metrics >> /opt/start.sh.log 2>> /opt/start.sh.log
+git clone -b develop https://github.com/cryptaz/miner-metrics.git /home/metrics/miner-metrics >> /opt/start.sh.log 2>> /opt/start.sh.log
 echo "It seems like it's cloned from git. Making webapp..." >> /opt/start.sh.log 2>> /opt/start.sh.log
 chown metrics:metrics -R /home/metrics/miner-metrics >> /opt/start.sh.log 2>> /opt/start.sh.log
 rm /var/www/html/index.html >> /opt/start.sh.log 2>> /opt/start.sh.log
@@ -64,4 +64,5 @@ rm /var/www/html/status.json >> /opt/start.sh.log 2>> /opt/start.sh.log
 ln -s /home/metrics/miner-metrics/target/status.json /var/www/html/status.json >> /opt/start.sh.log 2>> /opt/start.sh.log
 #Magic line for exposing config to daemon
 ln -s $DAEMON_CONFIG_PATH /home/metrics/miner-metrics/target/config.json
-sudo -u metrics /bin/bash -c "cd /home/metrics/miner-metrics/target && java -jar minermetrics-1.0-SNAPSHOT-jar-with-dependencies.jar claymore_api_url=$CLAYMORE_API_URL > miner-metrics.stdout  2>&1"
+sudo -u metrics /bin/bash -c "cd /home/metrics/miner-metrics/target && java -jar minermetrics-1.0-SNAPSHOT-jar-with-dependencies.jar > miner-metrics.stdout 2>&1"
+tail -f /dev/null

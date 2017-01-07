@@ -1,6 +1,7 @@
 package org.cryptaz.minermetrics;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.cryptaz.minermetrics.async.AsyncTicker;
@@ -9,12 +10,12 @@ import org.cryptaz.minermetrics.models.dto.ConfigurationDTO;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import spark.Spark;
 
 import java.io.File;
 import java.io.IOException;
 
 import static spark.Spark.get;
-import static spark.Spark.port;
 
 public class Application {
 
@@ -39,17 +40,24 @@ public class Application {
         }
 
         //Starting web-server. This is done for sending command to application
-        port(9090);
-        Route reloadConfigurationEndpoint = new Route() {
+        Spark.setPort(9090);
+        Route getConfigurationEndpoint = new Route("/configuration") {
             @Override
-            public String handle(Request request, Response response) throws Exception {
+            public String handle(Request request, Response response) {
                 log.debug("Request for configuration");
                 ConfigurationDTO configurationDTO = Configuration.convertToDTO(configuration);
-                String json =  new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(configurationDTO);
+                String json = null;
+                try {
+                    json = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(configurationDTO);
+                } catch (JsonProcessingException e) {
+                    log.info("Could not parse config");
+                    response.status(500);
+                    return "Error during config loading";
+                }
                 return json;
             }
         };
-        get("/configuration", reloadConfigurationEndpoint);
+        get(getConfigurationEndpoint);
 
         log.info("Basic initializing passed, staring async worker.");
 
