@@ -1,5 +1,7 @@
 package org.cryptaz.minermetrics.models;
 
+import org.cryptaz.minermetrics.models.dto.InfluxConfigDTO;
+
 public class InfluxConfig {
 
     private String host;
@@ -44,5 +46,24 @@ public class InfluxConfig {
 
     public void setDb(String db) {
         this.db = db;
+    }
+
+    public InfluxConfig convertFromDTO(InfluxConfigDTO influxConfigDTO) {
+        if(influxConfigDTO == null){
+            return null;
+        }
+        return new InfluxConfig(influxConfigDTO.getHost(),influxConfigDTO.getUser(),influxConfigDTO.getPass(),influxConfigDTO.getDb());
+    }
+
+    public static InfluxConfigDTO convertToDTO(InfluxConfig influxConfig) {
+        if(influxConfig == null){
+            return null;
+        }
+        InfluxConfigDTO influxConfigDTO = new InfluxConfigDTO();
+        influxConfigDTO.setHost(influxConfig.getHost());
+        influxConfigDTO.setUser(influxConfig.getUser());
+        influxConfigDTO.setPass(influxConfig.getPass());
+        influxConfigDTO.setDb(influxConfig.getDb());
+        return influxConfigDTO;
     }
 }

@@ -1,19 +1,20 @@
 package org.cryptaz.minermetrics;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.cryptaz.minermetrics.async.AsyncTicker;
 import org.cryptaz.minermetrics.models.Configuration;
+import org.cryptaz.minermetrics.models.dto.ConfigurationDTO;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
 
+import static spark.Spark.get;
 import static spark.Spark.port;
-import static spark.Spark.post;
 
 public class Application {
 
@@ -23,7 +24,7 @@ public class Application {
         // Set up a simple configuration that logs on the console.
         log.info("MinerMetrics SNAPSHOT 1.0 started!");
         log.info("Loading configuration");
-        Configuration configuration = new Configuration();
+        final Configuration configuration = new Configuration();
         try {
             configuration.loadFromFile(new File("config.json"));
         }
@@ -41,17 +42,14 @@ public class Application {
         port(9090);
         Route reloadConfigurationEndpoint = new Route() {
             @Override
-            public Object handle(Request request, Response response) throws Exception {
-                if(Objects.equals(request.body(), "")) {
-                    response.status(400);
-                    return "";
-                }
-                String json = request.body();
-                log.info(json);
-                return "";
+            public String handle(Request request, Response response) throws Exception {
+                log.debug("Request for configuration");
+                ConfigurationDTO configurationDTO = Configuration.convertToDTO(configuration);
+                String json =  new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(configurationDTO);
+                return json;
             }
         };
-        post("/reload/configuration", reloadConfigurationEndpoint);
+        get("/configuration", reloadConfigurationEndpoint);
 
         log.info("Basic initializing passed, staring async worker.");
 

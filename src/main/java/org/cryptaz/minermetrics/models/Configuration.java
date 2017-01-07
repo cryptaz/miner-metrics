@@ -115,7 +115,7 @@ public class Configuration {
         return this.influxConfig;
     }
 
-    public List<MinerEndpointDTO> convertToDTO(List<MinerEndpoint> minerEndpoints) {
+    public static List<MinerEndpointDTO> convertToDTO(List<MinerEndpoint> minerEndpoints) {
         if(minerEndpoints == null) {
             return null;
         }
@@ -138,5 +138,18 @@ public class Configuration {
             minerEndpoints.add(minerEndpoint);
         }
         return minerEndpoints;
+    }
+
+    public static ConfigurationDTO convertToDTO(Configuration configuration) {
+        if(configuration == null) {
+            return null;
+        }
+        ConfigurationDTO configurationDTO = new ConfigurationDTO();
+        List<MinerEndpointDTO> minerEndpointDTOs = convertToDTO(configuration.getMinerEndpoints());
+        configurationDTO.setMinerEndpoints(minerEndpointDTOs);
+        InfluxConfig influxConfig = configuration.getInfluxConfig();
+        configurationDTO.setInfluxConfigDTO(InfluxConfig.convertToDTO(influxConfig));
+        configurationDTO.setTickTime(configuration.getTickTime());
+        return configurationDTO;
     }
 }
