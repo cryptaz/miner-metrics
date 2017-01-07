@@ -30,6 +30,10 @@ public class Configuration {
 
     public void loadFromFile(File file) throws IOException {
         String json = FileUtils.readFileToString(file);
+        if(json.equals("CREATE_DEFAULT_CONFIG")) {
+            //emulate config not found. This is done for docker purposes
+            throw new IOException();
+        }
         ObjectMapper objectMapper = new ObjectMapper();
         ConfigurationDTO configurationDTO = objectMapper.readValue(json, ConfigurationDTO.class);
         if(configurationDTO.getMinerEndpoints() != null) {
