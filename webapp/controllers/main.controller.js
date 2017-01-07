@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('minerMetricsApp')
-    .controller('MainController', ['$scope', '$http', function ($scope, $http) {
+    .controller('MainController', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
         console.log('Main page opened');
         $scope.initialized = null;
         $scope.game = false;
         $scope.claymores = [];
+
+
 
         $http.get('status.json').then(function (response) {
             $scope.initialized = response.data.initialized;
@@ -13,16 +15,13 @@ angular.module('minerMetricsApp')
             if (response.data.claymores != null) {
                 $scope.claymores = response.data.claymores;
             }
-            console.log($scope.claymores);
         }, function (error) {
             $scope.initialized = false;
             $scope.started = false;
         });
-
-
         $scope.generateDashboard = function (id) {
             $scope.template = null;
-            if($scope.claymores[id] == null){
+            if ($scope.claymores[id] == null) {
                 alert('No claymores defined');
                 return;
             }
@@ -33,7 +32,6 @@ angular.module('minerMetricsApp')
                 method: 'GET',
                 transformResponse: undefined
             }).then(function (response) {
-                console.log(response);
                 var baseTemplateJson = response.data;
                 baseTemplateJson = baseTemplateJson.replace(/#/g, $scope.claymores[id].url);
                 var baseTemplate = JSON.parse(baseTemplateJson);
@@ -43,8 +41,7 @@ angular.module('minerMetricsApp')
                     transformResponse: undefined
                 }).then(function (response) {
                     var cardTemplateJson = response.data;
-                    console.log($scope.claymores[id]);
-                    for(var i=0;i<$scope.claymores[id].cardCount;i++) {
+                    for (var i = 0; i < $scope.claymores[id].cardCount; i++) {
                         var replaced = cardTemplateJson.replace(/\*/g, i);
                         replaced = replaced.replace(/#/g, $scope.claymores[id].url);
                         var cardTemplate = JSON.parse(replaced);
@@ -53,10 +50,13 @@ angular.module('minerMetricsApp')
                         });
                         $scope.template = JSON.stringify(baseTemplate);
                     }
-
+                }, function (error) {
+                    //todo
+                    console.log(error)
                 });
+            }, function (error) {
+                //todo
+                console.log(error)
             });
-
         }
-
     }]);

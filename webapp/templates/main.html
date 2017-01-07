@@ -36,7 +36,7 @@
                 <p>
                     <button class="btn btn-success" ng-click="game=!game">Waste my time</button>
                 </p>
-                <div ng-show="game" class="wrap">
+                <div ng-if="game" class="wrap">
                     <iframe class="frame" src="http://shahata.github.io/memory-game/" frameBorder="0" width="600"
                             height="1000">Loading iframe</iframe>
                 </div>
