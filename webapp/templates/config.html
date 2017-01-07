@@ -1,0 +1,95 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li>
+                    <a ui-sref="main">Main interface</a>
+                </li>
+                <li>
+                    <a ui-sref="logs">Logs</a>
+                </li>
+                <li class="active">
+                    <a ui-sref="config">Configuration</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h2 class="page-header">Configuration</h2>
+            <h3>Daemon configuration:</h3>
+            <div>
+                <div class="form-group">
+                    <label>Tick time</label>
+                    <input type="text" class="form-control" id="tick_time" placeholder="In seconds">
+                    <small id="tick_time_help" class="form-text text-muted">Time between polls (in seconds, default
+                        3).
+                    </small>
+                </div>
+            </div>
+            <hr>
+
+            <h3>Claymore instances</h3>
+            <hr>
+            <div class="alert alert-danger">You have not configured any miner instances yet!</div>
+            <h4>Add new miner instance:</h4>
+            <div style="width: 500px; border:1px solid rgba(0, 0, 0, .5);border-radius: 4px; padding:10px">
+                <h5>Add new miner:</h5>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" id="claymore_name" placeholder="Name">
+                    <small id="claymore_name_help" class="form-text text-muted">Choose name for that miner instance.</small>
+                </div>
+                <div class="form-group">
+                    <label>Claymore URL</label>
+                    <input type="text" class="form-control" id="claymore_url" placeholder="Claymore url">
+                    <small id="claymore_url_help" class="form-text text-muted">Claymore miner URL provided by option
+                        -mport.
+                    </small>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-lg btn-success">Test</button>
+                    <button class="btn-lg btn-warning">Save</button>
+                </div>
+            </div>
+
+
+            <h3>Database configuration</h3>
+            <div class="alert alert-warning">Do not edit lines below until you are know what are you doing. If so, don't
+                forget to change datasource in Grafana
+            </div>
+            <h4>InfluxDB</h4>
+            <div ng-form>
+                <div class="form-group">
+                    <label>InfluxDB host</label>
+                    <input type="text" class="form-control" id="influx_host" placeholder="InfluxDB host"
+                           ng-disabled="!editInflux">
+                    <small id="influx_host_help" class="form-text text-muted">InfluxDB URL (default:
+                        http://127.0.0.1:8086)
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label>InfluxDB user</label>
+                    <input type="text" class="form-control" id="influx_user" placeholder="InfluxDB user"
+                           ng-disabled="!editInflux">
+                    <small id="influx_user_help" class="form-text text-muted">Username (default: root)</small>
+                </div>
+                <div class="form-group">
+                    <label>InfluxDB password</label>
+                    <input type="text" class="form-control" id="influx_pass" placeholder="InfluxDB password"
+                           ng-disabled="!editInflux">
+                    <small id="influx_host_pass" class="form-text text-muted">Password (default: root)</small>
+                </div>
+                <div class="form-group">
+                    <label>InfluxDB database</label>
+                    <input type="text" class="form-control" id="influx_db" placeholder="InfluxDB database"
+                           ng-disabled="!editInflux">
+                    <small id="influx_db_help" class="form-text text-muted">Database (default: minermetrics)</small>
+                </div>
+            </div>
+            <button class="btn btn-danger" style="opacity:0.8" ng-show="!editInflux" ng-click="editInflux=true">I want
+                to edit this anyway
+            </button>
+            <hr>
+        </div>
+    </div>
+</div>
+</div>

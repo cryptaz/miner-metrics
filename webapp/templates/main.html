@@ -2,9 +2,14 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li class="active"><a ui-sref="main">Main interface</a>
+                <li class="active">
+                    <a ui-sref="main">Main interface</a>
                 </li>
                 <li><a ui-sref="logs">Logs</a></li>
+
+                <li>
+                    <a ui-sref="config">Configuration</a>
+                </li>
             </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -38,7 +43,8 @@
                 </p>
                 <div ng-if="game" class="wrap">
                     <iframe class="frame" src="http://shahata.github.io/memory-game/" frameBorder="0" width="600"
-                            height="1000">Loading iframe</iframe>
+                            height="1000">Loading iframe
+                    </iframe>
                 </div>
             </div>
             <div class="table-responsive" ng-show="initialized && started">
