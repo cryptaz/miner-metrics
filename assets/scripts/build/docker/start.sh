@@ -1,4 +1,8 @@
 #!/bin/bash
+#Env variables
+#TODO more variables
+DAEMON_CONFIG_PATH=/opt/config.json
+
 echo "" > /opt/start.sh.log
 echo "Starting miner-metrics" >> /opt/start.sh.log 2>> /opt/start.sh.log
 rm -R /var/www/html/* >> /opt/start.sh.log 2>> /opt/start.sh.log
@@ -15,6 +19,9 @@ if [ ! -f /home/metrics/.initialized ]; then
     service influxd start >> /opt/start.sh.log 2>> /opt/start.sh.log
     echo "Creating InfluxDB database" >> /opt/start.sh.log 2>> /opt/start.sh.log
     influx -execute "create database minermetrics" >> /opt/start.sh.log 2>> /opt/start.sh.log
+    #creating fresh config. Miner-metrics daemon will pick this instruction and create fresh
+    echo "First time load, daemon config will be initialized with default values" >> /opt/start.sh.log 2>> /opt/start.sh.log
+    echo "CREATE_DEFAULT_CONFIG" > "$DAEMON_CONFIG_PATH"
 else
     echo "{\"initialized\": true, \"started\": false}" > /var/www/html/status.json 2>> /opt/start.sh.log
     echo "Starting InfluxDB" >> /opt/start.sh.log 2>> /opt/start.sh.log
@@ -55,4 +62,6 @@ ln -s /home/metrics/miner-metrics/target/daemon.log /var/www/html/daemon_log.htm
 echo "Successfully compiled project, starting daemon." >> /opt/start.sh.log 2>> /opt/start.sh.log
 rm /var/www/html/status.json >> /opt/start.sh.log 2>> /opt/start.sh.log
 ln -s /home/metrics/miner-metrics/target/status.json /var/www/html/status.json >> /opt/start.sh.log 2>> /opt/start.sh.log
+#Magic line for exposing config to daemon
+ln -s $DAEMON_CONFIG_PATH /home/metrics/miner-metrics/target/config.json
 sudo -u metrics /bin/bash -c "cd /home/metrics/miner-metrics/target && java -jar minermetrics-1.0-SNAPSHOT-jar-with-dependencies.jar claymore_api_url=$CLAYMORE_API_URL > miner-metrics.stdout  2>&1"
