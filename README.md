@@ -72,6 +72,7 @@ And then start normally as described above.
 # TODO
 * Test Claymore ETH dualminer
 * Unit tests
+* [ARCHITECT] get rid out of status.json
 * Add cryptocurrencies ticking and make profit dashboard
 * Extend management interface (Web UI)
 

@@ -1,19 +1,24 @@
 package org.cryptaz.minermetrics.async;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.cryptaz.minermetrics.InfluxWriter;
 import org.cryptaz.minermetrics.api.impl.ClaymoreAPI;
-import org.cryptaz.minermetrics.models.*;
+import org.cryptaz.minermetrics.models.Configuration;
+import org.cryptaz.minermetrics.models.Constants;
+import org.cryptaz.minermetrics.models.DaemonStatus;
+import org.cryptaz.minermetrics.models.MinerEndpoint;
 import org.cryptaz.minermetrics.models.dto.ClaymoreTickDTO;
-import org.cryptaz.minermetrics.models.dto.TickDTO;
 import org.joda.time.DateTime;
+import spark.Request;
+import spark.Response;
+import spark.Route;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static spark.Spark.get;
 
 public class AsyncTicker implements Runnable {
 
@@ -52,6 +57,28 @@ public class AsyncTicker implements Runnable {
         assert (configuration.getInfluxConfig()!= null);
         influxWriter = new InfluxWriter(configuration.getInfluxConfig());
         this.lastNotified = null;
+
+
+        //FIXME Oh my god, why HERE? will fix it later
+        Route getDaemonStatus = new Route("/status") {
+            @Override
+            public Object handle(Request request, Response response) {
+                log.debug("Request for daemon status");
+                DaemonStatus daemonStatus = new DaemonStatus();
+                daemonStatus.setStarted(true);
+                daemonStatus.setInitialized(true);
+                daemonStatus.setSuccessfulTicks(successfulTicks);
+                daemonStatus.setFailedTicks(failedTicks);
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(daemonStatus);
+                } catch (JsonProcessingException e) {
+                    response.status(500);
+                    return "Could not turn status to json string";
+                }
+            }
+        };
+        get(getDaemonStatus);
     }
 
     @Override
@@ -75,7 +102,6 @@ public class AsyncTicker implements Runnable {
                             continue;
                         }
                         successfulTicks++;
-                        saveStatus(tickDTO);
                     }
                 }
             }
@@ -88,32 +114,6 @@ public class AsyncTicker implements Runnable {
                     log.info("No miner endpoint specified! Configure it in Web UI");
                 }
             }
-        }
-    }
-
-    private void saveStatus(TickDTO tickDTO) {
-        try {
-            DaemonStatus daemonStatus = new DaemonStatus();
-            List<ClaymoreInstanceInfo> list = new ArrayList<>();
-            for(ClaymoreAPI claymoreAPI : claymores) {
-                ClaymoreInstanceInfo claymoreInstanceInfo = new ClaymoreInstanceInfo();
-                claymoreInstanceInfo.setCardCount(tickDTO.getCardTickDatas().size());
-                claymoreInstanceInfo.setUrl(claymoreAPI.getUrl());
-                list.add(claymoreInstanceInfo);
-            }
-            daemonStatus.setClaymores(list);
-            daemonStatus.setSuccessfulTicks(successfulTicks);
-            daemonStatus.setFailedTicks(failedTicks);
-            daemonStatus.setInitialized(true);
-            daemonStatus.setStarted(true);
-            ObjectMapper objectMapper = new ObjectMapper();
-            String json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(daemonStatus);
-            File file = new File("status.json");
-            FileUtils.writeStringToFile(file, json);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            log.info("Could not save to file");
         }
     }
 }

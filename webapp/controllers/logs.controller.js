@@ -33,45 +33,47 @@ angular.module('minerMetricsApp')
 
         $scope.showLog = function (name) {
             $scope.tickStatus().then(function (result) {
-                if(name == 'startup') {
-                    $scope.daemonClicked = false;
-                    $http({
-                        url: 'startup_log.html',
-                        method: 'GET',
-                        transformResponse: undefined
-                    }).then(function (response) {
-                        $scope.error.noLogFileFound = false;
-                        $scope.log = response.data
-                    }, function (error) {
-                        $scope.error.noLogFileFound = true;
-                        $scope.log = false;
-                    })
-                }
-                if(name == 'daemon')  {
-                    $scope.daemonClicked = true;
-                    if(!$scope.started) {
-                        $scope.error.notStarted = true;
-                        $scope.log = false;
-                        return;
-                    }
-                    $scope.error.notStarted = false;
-                    $http({
-                        url: 'daemon_log.html',
-                        method: 'GET',
-                        transformResponse: undefined
-                    }).then(function (response) {
-                        $scope.error.noLogFileFound = false;
-                        $scope.log = response.data
-                    }, function (error) {
-                        $scope.error.noLogFileFound = true;
-                        $scope.log = false;
-                    })
-                }
+                getLogFromPromise(name);
             }, function (error) {
-                $scope.log = false;
-                $scope.error.noStatusFile = true;
-                console.log('Status could not obtained');
+                getLogFromPromise(name);
             });
+        };
+
+        function getLogFromPromise(name) {
+            if(name == 'startup') {
+                $scope.daemonClicked = false;
+                $http({
+                    url: 'startup_log.html',
+                    method: 'GET',
+                    transformResponse: undefined
+                }).then(function (response) {
+                    $scope.error.noLogFileFound = false;
+                    $scope.log = response.data
+                }, function (error) {
+                    $scope.error.noLogFileFound = true;
+                    $scope.log = false;
+                })
+            }
+            if(name == 'daemon')  {
+                $scope.daemonClicked = true;
+                if(!$scope.started) {
+                    $scope.error.notStarted = true;
+                    $scope.log = false;
+                    return;
+                }
+                $scope.error.notStarted = false;
+                $http({
+                    url: 'daemon_log.html',
+                    method: 'GET',
+                    transformResponse: undefined
+                }).then(function (response) {
+                    $scope.error.noLogFileFound = false;
+                    $scope.log = response.data
+                }, function (error) {
+                    $scope.error.noLogFileFound = true;
+                    $scope.log = false;
+                })
+            }
         }
 
     }]);

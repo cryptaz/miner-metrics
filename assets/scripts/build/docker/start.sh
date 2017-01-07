@@ -29,6 +29,12 @@ else
 fi
 echo "Starting Grafana" >> /opt/start.sh.log 2>> /opt/start.sh.log
 service grafana-server start >> /opt/start.sh.log 2>> /opt/start.sh.log
+if [ -d /etc/nginx/sites-enabled/default ]; then
+    echo "Removing default nginx config" >> /opt/start.sh.log 2>> /opt/start.sh.log
+    rm /etc/nginx/sites-enabled/default >> /opt/start.sh.log 2>> /opt/start.sh.log
+fi
+echo "Configuring nginx properly" >> /opt/start.sh.log 2>> /opt/start.sh.log
+cp /opt/nginx.config /etc/nginx/sites-enabled/miner-metrics
 echo "Starting nginx" >> /opt/start.sh.log 2>> /opt/start.sh.log
 service nginx start >> /opt/start.sh.log 2>> /opt/start.sh.log
 echo "Miner metrics have not started yet. Wait few seconds until project is cloned from git (it takes about 10-60 seconds depending on your internet connection)" > /var/www/html/index.html 2>> /opt/start.sh.log

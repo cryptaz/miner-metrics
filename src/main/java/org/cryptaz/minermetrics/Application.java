@@ -41,6 +41,8 @@ public class Application {
 
         //Starting web-server. This is done for sending command to application
         Spark.setPort(9090);
+        Spark.setIpAddress("127.0.0.1");
+
         Route getConfigurationEndpoint = new Route("/configuration") {
             @Override
             public String handle(Request request, Response response) {
