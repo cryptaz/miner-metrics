@@ -2,9 +2,15 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li><a ui-sref="main">Main interface</a>
+                <li>
+                    <a ui-sref="main">Main interface</a>
                 </li>
-                <li class="active"><a ui-sref="logs">Logs</a></li>
+                <li class="active">
+                    <a ui-sref="logs">Logs</a>
+                </li>
+                <li>
+                    <a ui-sref="config">Configuration</a>
+                </li>
             </ul>
         </div>
         <div class="col-sm-offset-3 col-md-10 main">
@@ -21,9 +27,16 @@
             <pre ng-show="log" style="width: 80%">{{log}}</pre>
 
 
-            <div ng-if="error.noLogFileFound" class="alert alert-danger">Cannot access log file! Something nasty is happening. Try to jump into docker and watch logs by yourself.</div>
-            <div ng-if="error.noStatusFile" class="alert alert-danger">Status file not found, probably not all environment is yet not set up!</div>
-            <div ng-if="!error.noStatusFile && error.notStarted && daemonClicked" class="alert alert-warning">Daemon have not started yet. Please, wait until application loads (needed time depends on your internet connection). You also may watch startup logs.</div>
+            <div ng-if="error.noLogFileFound" class="alert alert-danger">Cannot access log file! Something nasty is
+                happening. Try to jump into docker and watch logs by yourself.
+            </div>
+            <div ng-if="error.noStatusFile" class="alert alert-danger">Status file not found, probably not all
+                environment is yet not set up!
+            </div>
+            <div ng-if="!error.noStatusFile && error.notStarted && daemonClicked" class="alert alert-warning">Daemon
+                have not started yet. Please, wait until application loads (needed time depends on your internet
+                connection). You also may watch startup logs.
+            </div>
             <div ng-if="error.template" class="alert alert alert-danger">Something fatal with the templates!</div>
 
         </div>

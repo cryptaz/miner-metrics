@@ -3,13 +3,13 @@ package org.cryptaz.minermetrics;
 import org.apache.log4j.Logger;
 import org.cryptaz.minermetrics.models.CardTickData;
 import org.cryptaz.minermetrics.models.GeneralTickData;
+import org.cryptaz.minermetrics.models.InfluxConfig;
 import org.cryptaz.minermetrics.models.dto.ClaymoreTickDTO;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.BatchPoints;
 import org.influxdb.dto.Point;
 
-import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 
@@ -23,19 +23,17 @@ public class InfluxWriter {
     private String INFLUXDB_DB = null;
 
     private InfluxDB influxDB;
-    private Properties properties;
 
-    public InfluxWriter(Properties properties) {
-        this.properties = properties;
-        INFLUXDB_HOST = properties.getProperty("influxdb_host");
-        INFLUXDB_USER = properties.getProperty("influxdb_user");
-        INFLUXDB_PASS = properties.getProperty("influxdb_pass");
-        INFLUXDB_DB = properties.getProperty("influxdb_db");
+    public InfluxWriter(InfluxConfig influxConfig) {
+        INFLUXDB_HOST = influxConfig.getHost();
+        INFLUXDB_USER = influxConfig.getUser();
+        INFLUXDB_PASS = influxConfig.getPass();
+        INFLUXDB_DB = influxConfig.getDb();
         this.influxDB = InfluxDBFactory.connect(INFLUXDB_HOST, INFLUXDB_USER, INFLUXDB_PASS);
     }
 
     public InfluxWriter() {
-        throw new IllegalArgumentException("Do not call without properties!");
+        throw new IllegalArgumentException("Do not call without influx config!");
     }
 
     public boolean writeClaymoreTick(ClaymoreTickDTO tickDTO) {

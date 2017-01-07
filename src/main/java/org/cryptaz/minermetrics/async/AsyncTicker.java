@@ -5,8 +5,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.cryptaz.minermetrics.InfluxWriter;
 import org.cryptaz.minermetrics.api.impl.ClaymoreAPI;
-import org.cryptaz.minermetrics.models.ClaymoreInstanceInfo;
-import org.cryptaz.minermetrics.models.DaemonStatus;
+import org.cryptaz.minermetrics.models.*;
 import org.cryptaz.minermetrics.models.dto.ClaymoreTickDTO;
 import org.cryptaz.minermetrics.models.dto.TickDTO;
 import org.joda.time.DateTime;
@@ -15,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 public class AsyncTicker implements Runnable {
 
@@ -29,28 +27,30 @@ public class AsyncTicker implements Runnable {
     private int tickTime;
     private int notificationTime;
     private String claymoreApiUrl;
-    private Properties properties;
+    private Configuration configuration;
     private DateTime lastNotified;
     private List<ClaymoreAPI> claymores;
 
-    public AsyncTicker(Properties properties) {
-        this.properties = properties;
-        this.tickTime = Integer.parseInt(properties.getProperty("tick_poll_time"));
-        this.notificationTime = Integer.parseInt(properties.getProperty("stat_notification_time"));
-        this.claymores = new ArrayList<>();
-        String claymoreApiUrlBuffer = properties.getProperty("claymore_api_url");
-        if (claymoreApiUrlBuffer.contains(";")) {
-            String[] claymoresstring = claymoreApiUrlBuffer.split(";");
-            log.info("Found multiple claymore instances (" + claymoresstring.length + ")");
-            for (String claymoreUrl : claymoresstring) {
-                log.info("Injecting claymore with endpoint at " + claymoreUrl);
-                this.claymores.add(new ClaymoreAPI(claymoreUrl));
-            }
-        } else {
-            log.info("Injecting claymore at " + claymoreApiUrlBuffer);
-            this.claymores.add(new ClaymoreAPI(claymoreApiUrlBuffer));
+    public AsyncTicker(Configuration configuration) {
+        this.configuration = configuration;
+        this.tickTime = configuration.getTickTime();
+        this.notificationTime = Constants.STAT_NOTIFICATION_TIME;
+        if(configuration.getMinerEndpoints() == null) {
+            log.info("No miners endpoints is configured. Configure it from WebUI");
+            this.claymores = null;
         }
-        influxWriter = new InfluxWriter(properties);
+        else {
+            log.info("Found " +  configuration.getMinerEndpoints().size() + " miners endpoints.");
+            List<MinerEndpoint> minerEndpoints = configuration.getMinerEndpoints();
+            List<ClaymoreAPI> claymores = new ArrayList<>();
+            for(MinerEndpoint minerEndpoint: minerEndpoints) {
+                log.info("Injecting claymore at endpoint: " + minerEndpoint.getUrl());
+                ClaymoreAPI claymoreAPI = new ClaymoreAPI(minerEndpoint.getUrl());
+                claymores.add(claymoreAPI);
+            }
+        }
+        assert (configuration.getInfluxConfig()!= null);
+        influxWriter = new InfluxWriter(configuration.getInfluxConfig());
         this.lastNotified = null;
     }
 
@@ -62,24 +62,31 @@ public class AsyncTicker implements Runnable {
         while (isWorking) {
             DateTime dateTime = new DateTime();
             if (dateTime.getSecondOfMinute() % tickTime == 0) {
-                for (ClaymoreAPI claymoreAPI : claymores) {
-                    ClaymoreTickDTO tickDTO = claymoreAPI.tick();
-                    if (tickDTO == null) {
-                        failedTicks++;
-                        continue;
+                if(claymores != null) {
+                    for (ClaymoreAPI claymoreAPI : claymores) {
+                        ClaymoreTickDTO tickDTO = claymoreAPI.tick();
+                        if (tickDTO == null) {
+                            failedTicks++;
+                            continue;
+                        }
+                        boolean wrote = influxWriter.writeClaymoreTick(tickDTO);
+                        if (!wrote) {
+                            failedTicks++;
+                            continue;
+                        }
+                        successfulTicks++;
+                        saveStatus(tickDTO);
                     }
-                    boolean wrote = influxWriter.writeClaymoreTick(tickDTO);
-                    if (!wrote) {
-                        failedTicks++;
-                        continue;
-                    }
-                    successfulTicks++;
-                    saveStatus(tickDTO);
                 }
             }
             if (lastNotified == null || new DateTime().minusMinutes(notificationTime).isAfter(lastNotified)) {
                 lastNotified = dateTime;
-                log.info("Processed " + (successfulTicks + failedTicks) + " ticks [" + (successfulTicks + failedTicks) + " successful; " + failedTicks + " failed]");
+                if(claymores != null) {
+                    log.info("Processed " + (successfulTicks + failedTicks) + " ticks [" + (successfulTicks + failedTicks) + " successful; " + failedTicks + " failed]");
+                }
+                else {
+                    log.info("No miner endpoint specified! Configure it in Web UI");
+                }
             }
         }
     }
@@ -100,7 +107,7 @@ public class AsyncTicker implements Runnable {
             daemonStatus.setInitialized(true);
             daemonStatus.setStarted(true);
             ObjectMapper objectMapper = new ObjectMapper();
-            String json = objectMapper.writeValueAsString(daemonStatus);
+            String json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(daemonStatus);
             File file = new File("status.json");
             FileUtils.writeStringToFile(file, json);
 
