@@ -26,7 +26,9 @@ echo "Starting nginx" >> /opt/start.sh.log 2>> /opt/start.sh.log
 service nginx start >> /opt/start.sh.log 2>> /opt/start.sh.log
 echo "Miner metrics have not started yet. Wait few seconds until project is cloned from git (it takes about 10-60 seconds depending on your internet connection)" > /var/www/html/index.html 2>> /opt/start.sh.log
 echo "Deleting miner-metrics project folder if exits" >> /opt/start.sh.log 2>> /opt/start.sh.log
-rm -R /home/metrics/miner-metrics >> /opt/start.sh.log 2>> /opt/start.sh.log
+if [ -d /home/metrics/miner-metrics ]; then
+    rm -R /home/metrics/miner-metrics >> /opt/start.sh.log 2>> /opt/start.sh.log
+fi
 echo "Cloning from git" >> /opt/start.sh.log 2>> /opt/start.sh.log
 git clone https://github.com/cryptaz/miner-metrics.git /home/metrics/miner-metrics >> /opt/start.sh.log 2>> /opt/start.sh.log
 echo "It seems like it's cloned from git. Making webapp..." >> /opt/start.sh.log 2>> /opt/start.sh.log
@@ -53,4 +55,4 @@ ln -s /home/metrics/miner-metrics/target/daemon.log /var/www/html/daemon_log.htm
 echo "Successfully compiled project, starting daemon." >> /opt/start.sh.log 2>> /opt/start.sh.log
 rm /var/www/html/status.json >> /opt/start.sh.log 2>> /opt/start.sh.log
 ln -s /home/metrics/miner-metrics/target/status.json /var/www/html/status.json >> /opt/start.sh.log 2>> /opt/start.sh.log
-sudo -u metrics /bin/bash -c "cd /home/metrics/miner-metrics/target && java -jar minermetrics-1.0-SNAPSHOT-jar-with-dependencies.jar > miner-metrics.stdout claymore_api_url=$CLAYMORE_API_URL 2>&1"
+sudo -u metrics /bin/bash -c "cd /home/metrics/miner-metrics/target && java -jar minermetrics-1.0-SNAPSHOT-jar-with-dependencies.jar claymore_api_url=$CLAYMORE_API_URL > miner-metrics.stdout  2>&1"
