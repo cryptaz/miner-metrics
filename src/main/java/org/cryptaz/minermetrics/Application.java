@@ -43,9 +43,10 @@ public class Application {
             log.info("Trying to load config from file (config.json)");
             configuration.loadFromFile(new File("config.json"));
         } catch (IOException e) {
-            log.info("Could not load config or instruction to create new one is passed. Creating new default config");
+            log.info("No config found or instruction to create new one is passed. Creating new default config");
             try {
                 configuration.initDefault();
+                log.info("Created new config file");
             } catch (IOException e1) {
                 log.info("Could not save default config. Maybe permissions? It was IOException");
             }

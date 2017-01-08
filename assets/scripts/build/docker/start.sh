@@ -70,5 +70,5 @@ rm /var/www/html/status.json >> /opt/start.sh.log 2>> /opt/start.sh.log
 ln -s /home/metrics/miner-metrics/target/status.json /var/www/html/status.json >> /opt/start.sh.log 2>> /opt/start.sh.log
 #Magic line for exposing config to daemon
 ln -s $DAEMON_CONFIG_PATH /home/metrics/miner-metrics/target/config.json
-sudo -u metrics /bin/bash -c "cd /home/metrics/miner-metrics/target && java -jar minermetrics-1.0-SNAPSHOT-jar-with-dependencies.jar > miner-metrics.stdout 2>&1"
-tail -f /dev/null
+chown metrics:metrics "$DAEMON_CONFIG_PATH"
+sudo -u metrics /bin/bash -c "cd /home/metrics/miner-metrics/target && java -jar minermetrics-1.01-SNAPSHOT-jar-with-dependencies.jar > miner-metrics.stdout 2>&1"
