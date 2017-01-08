@@ -39,6 +39,7 @@ public class Configuration {
 
     public void loadFromFile(File file) throws IOException {
         String json = FileUtils.readFileToString(file);
+        log.info("We found this config in file:" + json);
         if(json.equals("CREATE_DEFAULT_CONFIG")) {
             //emulate config not found. This is done for docker purposes
             throw new IOException();

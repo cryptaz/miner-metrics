@@ -39,6 +39,7 @@ public class Application {
         log.info("Loading configuration");
         final Configuration configuration = new Configuration();
         try {
+            log.info("Trying to load config from file (config.json)");
             configuration.loadFromFile(new File("config.json"));
         } catch (IOException e) {
             log.info("Could not load config. Creating new with default");
