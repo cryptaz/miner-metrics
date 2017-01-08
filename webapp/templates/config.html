@@ -30,8 +30,10 @@
 
             <h3>Claymore instances</h3>
             <hr>
-            <div class="alert alert-danger" ng-show="!config.minerEndpoints">You have not configured any miner instances
+            <div class="alert alert-danger" ng-show="!config.minerEndpoints & started">You have not configured any miner instances
                 yet!
+            </div>
+            <div class="alert alert-danger" ng-show="!started">Daemon have not started yet!
             </div>
             <table ng-show="config.minerEndpoints" class="table table-striped">
                 <thead>
@@ -121,7 +123,7 @@
                 Save configuration
             </button>
             <p> </p>
-            <div ng-if="error">There was error during getting config!</div>
+            <div ng-if="error && started">There was error during getting config!</div>
             <div ng-if="savedConfig" class="alert alert-success">Successfully saved configuration!</div>
             <div ng-if="savedConfig == false && savedConfig != null" class="alert alert-danger">There was error during saving configuration! Is daemon running?</div>
         </div>
