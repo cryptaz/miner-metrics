@@ -18,6 +18,30 @@ angular.module('minerMetricsApp')
             }
         };
 
+        $scope.tickStatus = function () {
+            //fixme refactor to service and $q.all
+            var deferred = $q.defer();
+            $http.get('status.json').then(function (response) {
+                $scope.initialized = response.data.initialized;
+                $scope.started = response.data.started;
+                deferred.resolve();
+            }, function (error) {
+                $scope.initialized = false;
+                $scope.started = false;
+                $http.get('/daemon/status').then(function (response) {
+                    $scope.initialized = response.data.initialized;
+                    $scope.started = response.data.started;
+                    deferred.resolve();
+                },function (error) {
+                    deferred.reject();
+                });
+            });
+            return deferred.promise;
+        };
+
+        $scope.tickStatus();
+
+
         $scope.claymore = {
             name: null,
             url: null,

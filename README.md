@@ -77,6 +77,7 @@ And then start normally as described above.
 I will push new image to docker each new snapshot release. Just pull new image from docker using ```docker pull cryptaz/miner-metrics``
 However, at now, you will lose your data if you start new updated image(as you creating whole new machine).
 Best way to migrate database, is to dump InfluxDB manually, upgrade, and then import data again (if you know how to do it). I will look into that soon to provide automated upgrade. It is on my todo list.
+Alternatively, to avoid using data, you can download Influxdb for your host system, and point daemon to this database.
 On each new snapshot, I will push new image to the docker repository. At now, you will lose your data on each new snapshot ()
 
 # Troubleshooting
