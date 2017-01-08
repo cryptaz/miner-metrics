@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 public class ClaymoreAPI implements MinerAPI {
     private HttpClient httpClient;
     private Properties properties;
+    private int cardCount;
     private String claymoreUrl;
     private boolean lastTrySuccessful;
     private boolean connected;
@@ -138,6 +139,7 @@ public class ClaymoreAPI implements MinerAPI {
         //String unknownStats1 = claymoreRawDTO.getResult().get(8);
 
         int cardCount = claymoreRawDTO.getResult().get(3).split(";").length;
+        this.cardCount = cardCount;
         generalTickData.setCardCount(cardCount);
         generalTickData.setVersion(versionBuffer);
         Period period = new Period();
@@ -172,6 +174,11 @@ public class ClaymoreAPI implements MinerAPI {
 
         log.debug("Saving template to file");
         FileUtils.writeStringToFile(new File("default_dashboards.json"), json);
+    }
+
+    @Override
+    public int getCardCount() {
+        return cardCount;
     }
 
     @Override

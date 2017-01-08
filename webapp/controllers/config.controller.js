@@ -5,7 +5,8 @@ angular.module('minerMetricsApp')
         console.log('Config page opened');
         $scope.editInflux = false;
         $scope.claymores = null;
-
+        $scope.addNewMiner = false;
+        $scope.savedConfig = null;
         $scope.config = {
             minerEndpoints: null,
             tickTime: 3,
@@ -19,7 +20,9 @@ angular.module('minerMetricsApp')
 
         $scope.claymore = {
             name: null,
-            url: null
+            url: null,
+            test: null,
+            lastUrl: null
         };
 
         $scope.response = {
@@ -35,11 +38,41 @@ angular.module('minerMetricsApp')
                 $scope.error = true;
             });
 
-        $scope.testClaymore = function () {
-            $http.post('/daemon/claymore/test').then(function (response) {
+        $scope.testClaymore = function (url) {
+                $http.post('/daemon/claymore/test', url).then(function (response) {
+                $scope.claymore.test = true;
                 console.log(response);
             }, function (error) {
+                $scope.claymore.lastUrl = url;
+                $scope.claymore.test = false;
                 console.log(error);
             })
+        };
+
+        $scope.addClaymore = function (claymore) {
+            var claymore = {url: claymore.url, name: claymore.name};
+            if($scope.config.minerEndpoints == null) {
+                $scope.config.minerEndpoints = [];
+            }
+            $scope.config.minerEndpoints.push(claymore);
+            $scope.configEdited = true;
+            $scope.claymore = {
+                name: null,
+                url: null,
+                test: null,
+                lastUrl: null
+            };
+            $scope.addNewMiner = false;
+        };
+
+        $scope.saveConfig = function () {
+            console.log('Saving config');
+            $http.post('/daemon/configuration', $scope.config).then(function (response) {
+                console.log(response);
+                $scope.savedConfig = true;
+            }, function (error) {
+                console.log(error);
+                $scope.savedConfig = false;
+            });
         }
     }]);

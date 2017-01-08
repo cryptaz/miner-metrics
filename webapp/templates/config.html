@@ -19,7 +19,8 @@
             <div>
                 <div class="form-group">
                     <label>Tick time</label>
-                    <input type="text" class="form-control" id="tick_time" placeholder="In seconds" ng-model="config.tickTime">
+                    <input type="text" class="form-control" id="tick_time" placeholder="In seconds"
+                           ng-model="config.tickTime">
                     <small id="tick_time_help" class="form-text text-muted">Time between polls (in seconds, default
                         3).
                     </small>
@@ -29,28 +30,55 @@
 
             <h3>Claymore instances</h3>
             <hr>
-            <div class="alert alert-danger">You have not configured any miner instances yet!</div>
-            <h4>Add new miner instance:</h4>
-            <div style="width: 500px; border:1px solid rgba(0, 0, 0, .5);border-radius: 4px; padding:10px">
+            <div class="alert alert-danger" ng-show="!config.minerEndpoints">You have not configured any miner instances
+                yet!
+            </div>
+            <table ng-show="config.minerEndpoints" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>URL</th>
+                    <th>Count of cards</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="endPoint in config.minerEndpoints">
+                    <td>{{$index}}</td>
+                    <td>{{endPoint.name}}</td>
+                    <td>{{endPoint.url}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-primary" ng-click="addNewMiner = !addNewMiner">Add new miner instance</button>
+            <p></p>
+            <div ng-show="addNewMiner" style="width: 500px; border:1px solid rgba(0, 0, 0, .3);border-radius: 5px; padding:10px">
                 <h5>Add new miner:</h5>
                 <div class="form-group">
                     <label>Name</label>
-                    <input type="text" class="form-control" id="claymore_name" placeholder="Name" ng-model="claymore.name">
-                    <small id="claymore_name_help" class="form-text text-muted">Choose name for that miner instance.</small>
+                    <input type="text" class="form-control" id="claymore_name" placeholder="Name"
+                           ng-model="claymore.name" ng-disabled="claymore.test">
+                    <small id="claymore_name_help" class="form-text text-muted">Choose name for that miner instance.
+                    </small>
                 </div>
                 <div class="form-group">
                     <label>Claymore URL</label>
-                    <input type="text" class="form-control" id="claymore_url" placeholder="Claymore url" ng-model="claymore.url">
+                    <input type="text" class="form-control" id="claymore_url" placeholder="Claymore url"
+                           ng-model="claymore.url" ng-disabled="claymore.test">
                     <small id="claymore_url_help" class="form-text text-muted">Claymore miner URL provided by option
                         -mport.
                     </small>
                 </div>
-                <div class="btn-group">
-                    <button class="btn-lg btn-success" ng-click="testClaymore(claymore.name)">Test</button>
-                    <button class="btn-lg btn-warning">Save</button>
+                <div ng-show="claymore.test" class="alert alert-success">Claymore found and accessible at
+                    {{claymore.url}}
                 </div>
+                <div ng-show="claymore.test == false" class="alert alert-danger">Claymore was not found at
+                    {{claymore.lastUrl}}. Recheck your API url with corresponding port (-mport)!
+                </div>
+                <button class="btn btn-success" ng-click="testClaymore(claymore.url)">Test</button>
+                <button class="btn btn-warning" ng-click="addClaymore(claymore)"
+                        ng-disabled="!claymore.test || !claymore.url || !claymore.name">Add
+                </button>
             </div>
-
 
             <h3>Database configuration</h3>
             <div class="alert alert-warning">Do not edit lines below until you are know what are you doing. If so, don't
@@ -81,16 +109,21 @@
                 <div class="form-group">
                     <label>InfluxDB database</label>
                     <input type="text" class="form-control" id="influx_db" placeholder="InfluxDB database"
-                           ng-disabled="!editInflux">
-                    <small id="influx_db_help" class="form-text text-muted" ng-model="config.influxConfig.db">Database (default: minermetrics)</small>
+                           ng-disabled="!editInflux" ng-model="config.influxConfig.db">
+                    <small id="influx_db_help" class="form-text text-muted">Database (default: minermetrics)</small>
                 </div>
             </div>
             <button class="btn btn-danger" style="opacity:0.8" ng-show="!editInflux" ng-click="editInflux=true">I want
                 to edit this anyway
             </button>
             <hr>
-
+            <button class="btn-lg btn-success" ng-show="!editInflux" ng-click="saveConfig()">
+                Save configuration
+            </button>
+            <p> </p>
             <div ng-if="error">There was error during getting config!</div>
+            <div ng-if="savedConfig" class="alert alert-success">Successfully saved configuration!</div>
+            <div ng-if="savedConfig == false" class="alert alert-danger">There was error during saving configuration!</div>
         </div>
     </div>
 </div>

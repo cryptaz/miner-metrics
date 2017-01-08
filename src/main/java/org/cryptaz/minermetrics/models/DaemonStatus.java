@@ -1,11 +1,15 @@
 package org.cryptaz.minermetrics.models;
 
+import java.util.List;
+
 public class DaemonStatus {
 
     private boolean initialized;
     private boolean started;
     private long successfulTicks;
     private long failedTicks;
+
+    List<ClaymoreInstanceInfo> claymoreInstances;
 
     public long getSuccessfulTicks() {
         return successfulTicks;
@@ -37,5 +41,13 @@ public class DaemonStatus {
 
     public void setStarted(boolean started) {
         this.started = started;
+    }
+
+    public List<ClaymoreInstanceInfo> getClaymoreInstances() {
+        return claymoreInstances;
+    }
+
+    public void setClaymoreInstances(List<ClaymoreInstanceInfo> claymoreInstances) {
+        this.claymoreInstances = claymoreInstances;
     }
 }

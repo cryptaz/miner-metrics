@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.cryptaz.minermetrics.InfluxWriter;
 import org.cryptaz.minermetrics.api.impl.ClaymoreAPI;
-import org.cryptaz.minermetrics.models.Configuration;
-import org.cryptaz.minermetrics.models.Constants;
-import org.cryptaz.minermetrics.models.DaemonStatus;
-import org.cryptaz.minermetrics.models.MinerEndpoint;
+import org.cryptaz.minermetrics.models.*;
 import org.cryptaz.minermetrics.models.dto.ClaymoreTickDTO;
 import org.joda.time.DateTime;
 import spark.Request;
@@ -17,6 +14,7 @@ import spark.Route;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static spark.Spark.get;
 
@@ -40,21 +38,27 @@ public class AsyncTicker implements Runnable {
         this.configuration = configuration;
         this.tickTime = configuration.getTickTime();
         this.notificationTime = Constants.STAT_NOTIFICATION_TIME;
-        if(configuration.getMinerEndpoints() == null) {
+        if (configuration.getMinerEndpoints() == null) {
             log.info("No miners endpoints is configured. Configure it from WebUI");
             this.claymores = null;
-        }
-        else {
-            log.info("Found " +  configuration.getMinerEndpoints().size() + " miners endpoints.");
+        } else {
+            log.info("Found " + configuration.getMinerEndpoints().size() + " miners endpoints.");
             List<MinerEndpoint> minerEndpoints = configuration.getMinerEndpoints();
             List<ClaymoreAPI> claymores = new ArrayList<>();
-            for(MinerEndpoint minerEndpoint: minerEndpoints) {
+            for (MinerEndpoint minerEndpoint : minerEndpoints) {
+                if(claymores.size() == 0) {
+                    for(ClaymoreAPI claymoreAPI:claymores) {
+                        if(Objects.equals(claymoreAPI.getUrl(), minerEndpoint.getUrl())) {
+                            break;
+                        }
+                    }
+                }
                 log.info("Injecting claymore at endpoint: " + minerEndpoint.getUrl());
                 ClaymoreAPI claymoreAPI = new ClaymoreAPI(minerEndpoint.getUrl());
                 claymores.add(claymoreAPI);
             }
         }
-        assert (configuration.getInfluxConfig()!= null);
+        assert (configuration.getInfluxConfig() != null);
         influxWriter = new InfluxWriter(configuration.getInfluxConfig());
         this.lastNotified = null;
 
@@ -69,6 +73,16 @@ public class AsyncTicker implements Runnable {
                 daemonStatus.setInitialized(true);
                 daemonStatus.setSuccessfulTicks(successfulTicks);
                 daemonStatus.setFailedTicks(failedTicks);
+                if(claymores != null) {
+                    List<ClaymoreInstanceInfo> claymoreInstanceInfos = new ArrayList<>();
+                    for(ClaymoreAPI claymoreAPI: claymores) {
+                        ClaymoreInstanceInfo claymoreInstanceInfo = new ClaymoreInstanceInfo();
+                        claymoreInstanceInfo.setUrl(claymoreAPI.getUrl());
+                        claymoreInstanceInfo.setCardCount(claymoreAPI.getCardCount());
+                        claymoreInstanceInfos.add(claymoreInstanceInfo);
+                    }
+                    daemonStatus.setClaymoreInstances(claymoreInstanceInfos);
+                }
                 ObjectMapper objectMapper = new ObjectMapper();
                 try {
                     return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(daemonStatus);
@@ -89,7 +103,27 @@ public class AsyncTicker implements Runnable {
         while (isWorking) {
             DateTime dateTime = new DateTime();
             if (dateTime.getSecondOfMinute() % tickTime == 0) {
-                if(claymores != null) {
+                List<MinerEndpoint> minerEndpoints = configuration.getMinerEndpoints();
+                if (minerEndpoints != null) {
+                    for (MinerEndpoint minerEndpoint : minerEndpoints) {
+                        boolean found = false;
+                        if (claymores != null) {
+                            for (ClaymoreAPI claymore : claymores) {
+                                if (Objects.equals(claymore.getUrl(), minerEndpoint.getUrl())) {
+                                    found = true;
+                                }
+                            }
+                        }
+                        if (!found || claymores == null) {
+                            if(claymores == null) {
+                                claymores = new ArrayList<>();
+                            }
+                            claymores.add(new ClaymoreAPI(minerEndpoint.getUrl()));
+                        }
+                    }
+                }
+
+                if (claymores != null) {
                     for (ClaymoreAPI claymoreAPI : claymores) {
                         ClaymoreTickDTO tickDTO = claymoreAPI.tick();
                         if (tickDTO == null) {
@@ -107,10 +141,9 @@ public class AsyncTicker implements Runnable {
             }
             if (lastNotified == null || new DateTime().minusMinutes(notificationTime).isAfter(lastNotified)) {
                 lastNotified = dateTime;
-                if(claymores != null) {
+                if (claymores != null) {
                     log.info("Processed " + (successfulTicks + failedTicks) + " ticks [" + (successfulTicks + failedTicks) + " successful; " + failedTicks + " failed]");
-                }
-                else {
+                } else {
                     log.info("No miner endpoint specified! Configure it in Web UI");
                 }
             }

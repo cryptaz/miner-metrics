@@ -28,6 +28,14 @@ public class Configuration {
     private List<MinerEndpoint> minerEndpoints;
     private InfluxConfig influxConfig;
 
+    public void loadFromDTO(ConfigurationDTO configurationDTO) {
+        List<MinerEndpoint> minerEndpoints = convertFromDTO(configurationDTO.getMinerEndpoints());
+        InfluxConfig influxConfig = InfluxConfig.convertFromDTO(configurationDTO.getInfluxConfig());
+        this.tickTime = configurationDTO.getTickTime();
+        this.minerEndpoints = minerEndpoints;
+        this.influxConfig = influxConfig;
+    }
+
     public void loadFromFile(File file) throws IOException {
         String json = FileUtils.readFileToString(file);
         if(json.equals("CREATE_DEFAULT_CONFIG")) {
@@ -41,6 +49,7 @@ public class Configuration {
             for (MinerEndpointDTO minerEndpointDTO : configurationDTO.getMinerEndpoints()) {
                 MinerEndpoint minerEndpoint = new MinerEndpoint();
                 minerEndpoint.setUrl(minerEndpointDTO.getUrl());
+                minerEndpoint.setName(minerEndpointDTO.getName());
                 minerEndpoints.add(minerEndpoint);
             }
             this.minerEndpoints = minerEndpoints;
@@ -90,8 +99,9 @@ public class Configuration {
             List<MinerEndpointDTO> minerEndpointDTOs = convertToDTO(this.minerEndpoints);
             configurationDTO.setMinerEndpoints(minerEndpointDTOs);
         }
+        configurationDTO.setInfluxConfig(InfluxConfig.convertToDTO(influxConfig));
         String json = null;
-        json = new ObjectMapper().writeValueAsString(configurationDTO);
+        json = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(configurationDTO);
         FileUtils.writeStringToFile(new File("config.json"), json);
     }
 
@@ -122,6 +132,7 @@ public class Configuration {
         List<MinerEndpointDTO> minerEndpointDTOs = new ArrayList<>();
         for (MinerEndpoint minerEndpoint : minerEndpoints) {
             MinerEndpointDTO minerEndpointDTO = new MinerEndpointDTO();
+            minerEndpointDTO.setName(minerEndpoint.getName());
             minerEndpointDTO.setUrl(minerEndpoint.getUrl());
             minerEndpointDTOs.add(minerEndpointDTO);
         }
@@ -134,6 +145,7 @@ public class Configuration {
         List<MinerEndpoint> minerEndpoints = new ArrayList<>();
         for (MinerEndpointDTO minerEndpointDTO: minerEndpointDTOs) {
             MinerEndpoint minerEndpoint = new MinerEndpoint();
+            minerEndpoint.setName(minerEndpointDTO.getName());
             minerEndpoint.setUrl(minerEndpointDTO.getUrl());
             minerEndpoints.add(minerEndpoint);
         }
@@ -151,5 +163,13 @@ public class Configuration {
         configurationDTO.setInfluxConfig(InfluxConfig.convertToDTO(influxConfig));
         configurationDTO.setTickTime(configuration.getTickTime());
         return configurationDTO;
+    }
+
+    public void addClaymore(MinerEndpoint minerEndpoint) throws IOException {
+        if(minerEndpoints == null){
+            minerEndpoints = new ArrayList<>();
+        }
+        minerEndpoints.add(minerEndpoint);
+        save();
     }
 }

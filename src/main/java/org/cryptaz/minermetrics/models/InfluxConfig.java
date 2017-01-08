@@ -48,13 +48,6 @@ public class InfluxConfig {
         this.db = db;
     }
 
-    public InfluxConfig convertFromDTO(InfluxConfigDTO influxConfigDTO) {
-        if(influxConfigDTO == null){
-            return null;
-        }
-        return new InfluxConfig(influxConfigDTO.getHost(),influxConfigDTO.getUser(),influxConfigDTO.getPass(),influxConfigDTO.getDb());
-    }
-
     public static InfluxConfigDTO convertToDTO(InfluxConfig influxConfig) {
         if(influxConfig == null){
             return null;
@@ -65,5 +58,12 @@ public class InfluxConfig {
         influxConfigDTO.setPass(influxConfig.getPass());
         influxConfigDTO.setDb(influxConfig.getDb());
         return influxConfigDTO;
+    }
+    public static InfluxConfig convertFromDTO(InfluxConfigDTO influxConfigDTO) {
+        if(influxConfigDTO == null){
+            return null;
+        }
+        InfluxConfig influxConfig = new InfluxConfig(influxConfigDTO.getHost(), influxConfigDTO.getUser(),influxConfigDTO.getPass(),influxConfigDTO.getDb());
+        return influxConfig;
     }
 }

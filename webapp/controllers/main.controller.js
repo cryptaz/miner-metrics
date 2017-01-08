@@ -15,14 +15,15 @@ angular.module('minerMetricsApp')
             $http.get('/daemon/status').then(function (response) {
                 $scope.initialized = response.data.initialized;
                 $scope.started = response.data.started;
-                $scope.successfulTicks = response.successfulTicks;
-                $scope.failedTicks = response.failedTicks;
+                $scope.successfulTicks = response.data.successfulTicks;
+                $scope.failedTicks = response.data.failedTicks;
+                if(response.data.claymoreInstances != null) {
+                    $scope.claymores = response.data.claymoreInstances;
+                }
             },function (error) {
                 //reject
             });
         });
-        
-
 
         $scope.tickStatus = function () {
             var deferred = $q.defer();
@@ -44,11 +45,6 @@ angular.module('minerMetricsApp')
             });
             return deferred.promise;
         };
-
-
-
-
-
 
         $scope.generateDashboard = function (id) {
             $scope.template = null;
