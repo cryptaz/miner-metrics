@@ -1,6 +1,7 @@
 package org.cryptaz.minermetrics;
 
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
@@ -79,12 +80,29 @@ public class Application {
                     ObjectMapper objectMapper = new ObjectMapper();
                     try {
                         log.info("We got json with config from WebUI:" + request.body());
-                        ConfigurationDTO configurationDTO = objectMapper.readValue(request.body(), ConfigurationDTO.class);
-                        configuration.loadFromDTO(configurationDTO);
-                        configuration.save();
+                        ConfigurationDTO configurationDTO = null;
+                        try {
+                            configurationDTO = objectMapper.readValue(request.body(), ConfigurationDTO.class);
+                        } catch (JsonParseException e) {
+                            log.info("Failed to parse this config json!");
+                            e.printStackTrace();
+                        }
+                        try {
+                            configuration.loadFromDTO(configurationDTO);
+                        } catch (Exception e) {
+                            log.info("Could save config from parsed config (json)");
+                            e.printStackTrace();
+                        }
+                        try {
+                            configuration.save();
+                        } catch (IOException e) {
+                            log.info("Could not save config to file");
+                            e.printStackTrace();
+
+                        }
                     } catch (IOException e) {
                         response.status(400);
-                        return "Could not save configuration (could not parse json from WebUI)";
+                        return "Could not save configuration. Watch logs";
                     }
                     response.status(200);
                     return "";
