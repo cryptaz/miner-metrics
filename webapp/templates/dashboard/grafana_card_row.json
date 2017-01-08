@@ -53,7 +53,7 @@
               ],
               "measurement": "card",
               "policy": "default",
-              "query": "SELECT mean(\"hashrate\") FROM \"card\" WHERE \"card_id\" = * AND \"miner_url\" = '#' AND $timeFilter GROUP BY time($interval) fill(null)",
+              "query": "SELECT mean(\"hashrate\") FROM \"card\" WHERE \"card_id\" = '*' AND \"miner_url\" = '#' AND $timeFilter GROUP BY time($interval) fill(null)",
               "rawQuery": true,
               "refId": "A",
               "resultFormat": "time_series",
@@ -212,7 +212,7 @@
                   "value": "#"
                 }
               ],
-              "query": "SELECT mean(\"temp\") FROM \"card\" WHERE \"card_id\" = * AND \"miner_url\" = '#' AND $timeFilter GROUP BY time($interval) fill(null)",
+              "query": "SELECT mean(\"temp\") FROM \"card\" WHERE \"card_id\" = '*' AND \"miner_url\" = '#' AND $timeFilter GROUP BY time($interval) fill(null)",
               "rawQuery": true
             }
           ],
@@ -330,7 +330,7 @@
                   "value": "#"
                 }
               ],
-              "query": "SELECT mean(\"fan\") FROM \"card\" WHERE \"card_id\" = * AND \"miner_url\" = '#' AND $timeFilter GROUP BY time($interval) fill(null)",
+              "query": "SELECT mean(\"fan\") FROM \"card\" WHERE \"card_id\" = '*' AND \"miner_url\" = '#' AND $timeFilter GROUP BY time($interval) fill(null)",
               "rawQuery": true
             }
           ],

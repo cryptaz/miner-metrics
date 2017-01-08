@@ -50,7 +50,7 @@ public class InfluxWriter {
         GeneralTickData generalTickData = tickDTO.getGeneralTickData();
         Point generalPoint = Point
                 .measurement("general")
-                .time(tickDTO.getDateTime().getMillis(), TimeUnit.MILLISECONDS)
+                .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                 .addField("miner_url", String.valueOf(generalTickData.getMinerUrl()))
                 .addField("version", generalTickData.getVersion())
                 .addField("uptime", generalTickData.getUptime().getMinutes())
@@ -62,9 +62,9 @@ public class InfluxWriter {
 
         for (CardTickData cardTickData : tickDTO.getCardTickDatas()) {
             Point point = Point.measurement("card")
-                    .time(tickDTO.getDateTime().getMillis(), TimeUnit.MILLISECONDS)
+                    .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                     .addField("miner_url", String.valueOf(generalTickData.getMinerUrl()))
-                    .addField("card_id", cardTickData.getId())
+                    .tag("card_id", String.valueOf(cardTickData.getId()))
                     .addField("hashrate", cardTickData.getHashrate())
                     .addField("temp", cardTickData.getTemperature())
                     .addField("fan", cardTickData.getFan())
