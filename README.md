@@ -71,7 +71,13 @@ And then start normally as described above.
 * [ARCHITECT] get rid out of status.json
 * Add cryptocurrencies ticking and make profit dashboard
 * Extend management interface (Web UI)
+* Automated upgrade
 
+# Upgrade
+I will push new image to docker each new snapshot release. Just pull new image from docker using ```docker pull cryptaz/miner-metrics``
+However, at now, you will lose your data if you start new updated image(as you creating whole new machine).
+Best way to migrate database, is to dump InfluxDB manually, upgrade, and then import data again (if you know how to do it). I will look into that soon to provide automated upgrade. It is on my todo list.
+On each new snapshot, I will push new image to the docker repository. At now, you will lose your data on each new snapshot ()
 
 # Troubleshooting
 Some places where to find out what's going on. Firstly, ensure that container started by typing
