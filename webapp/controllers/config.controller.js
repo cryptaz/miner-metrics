@@ -17,6 +17,11 @@ angular.module('minerMetricsApp')
             }
         };
 
+        $scope.claymore = {
+            name: null,
+            url: null
+        };
+
         $scope.response = {
             "minerEndpoints": null,
             "tickTime": 3,
