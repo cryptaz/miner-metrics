@@ -43,6 +43,7 @@ public class Configuration {
         if(json.trim().equals("CREATE_DEFAULT_CONFIG")) {
             //emulate config not found. This is done for docker purposes
             log.info("Creating new default config instruction found, creating default");
+            log.info("test line");
             throw new IOException();
         }
         ObjectMapper objectMapper = new ObjectMapper();
