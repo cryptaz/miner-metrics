@@ -126,7 +126,6 @@ public class AsyncTicker implements Runnable {
                 if (claymores != null) {
                     for (ClaymoreAPI claymoreAPI : claymores) {
                         ClaymoreTickDTO tickDTO = claymoreAPI.tick();
-                        log.info("Tick");
                         if (tickDTO == null) {
                             failedTicks++;
                             continue;

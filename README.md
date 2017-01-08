@@ -60,6 +60,7 @@ docker run --name miner-metrics -d -p 80:3000 -p 8080:80 cryptaz/miner-metrics
     ```
 
 # Build
+Steps below are only can be appended to major version releases(when I change version number), all minor fixes applied, when you restart you container.
 I have attached building scripts in my repo(assets/scripts/build/docker), so you can compile image by yourself. I'm building and pushing image from this folder.
 * Just clone repo, move into folder and build(assuming you are in root repository folder):<br />
     ```cd assets/scripts/build/docker/``` <br />
