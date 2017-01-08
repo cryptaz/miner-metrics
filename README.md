@@ -4,7 +4,7 @@ Fancy miner metrics powered by Grafana and InfluxDB. Easy to setup and beautiful
 
 We need tests, so feel free to submit issues.
 
-Tool is highly experimental, I would say it's alpha version, so bugs may appear. By the way, if you have questions, according this project, you can aske me in Telegram @CryptoFan. I'm always happy to resolve any problems, also can consult you about cryptocurrencies.
+Tool is highly experimental, I would say it's alpha version, so bugs may appear. By the way, if you have questions, according this project, you can ask me in Telegram @CryptoFan. I'm always happy to resolve any problems, also can consult you about cryptocurrencies.
 
 ![Dashboard](/assets/images/dashboard_sample.png?raw=true "Demo")
 
