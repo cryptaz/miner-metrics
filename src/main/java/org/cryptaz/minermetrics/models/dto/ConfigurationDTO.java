@@ -8,7 +8,7 @@ public class ConfigurationDTO {
 
     private int tickTime;
 
-    private InfluxConfigDTO influxConfigDTO;
+    private InfluxConfigDTO influxConfig;
 
     public List<MinerEndpointDTO> getMinerEndpoints() {
         return minerEndpoints;
@@ -26,11 +26,11 @@ public class ConfigurationDTO {
         this.tickTime = tickTime;
     }
 
-    public InfluxConfigDTO getInfluxConfigDTO() {
-        return influxConfigDTO;
+    public InfluxConfigDTO getInfluxConfig() {
+        return influxConfig;
     }
 
-    public void setInfluxConfigDTO(InfluxConfigDTO influxConfigDTO) {
-        this.influxConfigDTO = influxConfigDTO;
+    public void setInfluxConfig(InfluxConfigDTO influxConfig) {
+        this.influxConfig = influxConfig;
     }
 }

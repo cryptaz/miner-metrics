@@ -8,17 +8,48 @@ angular.module('minerMetricsApp')
         $scope.claymores = [];
 
 
-
         $http.get('status.json').then(function (response) {
             $scope.initialized = response.data.initialized;
             $scope.started = response.data.started;
-            if (response.data.claymores != null) {
-                $scope.claymores = response.data.claymores;
-            }
         }, function (error) {
-            $scope.initialized = false;
-            $scope.started = false;
+            $http.get('/daemon/status').then(function (response) {
+                $scope.initialized = response.data.initialized;
+                $scope.started = response.data.started;
+                $scope.successfulTicks = response.successfulTicks;
+                $scope.failedTicks = response.failedTicks;
+            },function (error) {
+                //reject
+            });
         });
+        
+
+
+        $scope.tickStatus = function () {
+            var deferred = $q.defer();
+            $http.get('status.json').then(function (response) {
+                $scope.initialized = response.data.initialized;
+                $scope.started = response.data.started;
+                deferred.resolve();
+            }, function (error) {
+
+                $scope.initialized = false;
+                $scope.started = false;
+                $http.get('/daemon/status').then(function (response) {
+                    $scope.initialized = response.data.initialized;
+                    $scope.started = response.data.started;
+                    deferred.resolve();
+                },function (error) {
+                    deferred.reject();
+                });
+            });
+            return deferred.promise;
+        };
+
+
+
+
+
+
         $scope.generateDashboard = function (id) {
             $scope.template = null;
             if ($scope.claymores[id] == null) {

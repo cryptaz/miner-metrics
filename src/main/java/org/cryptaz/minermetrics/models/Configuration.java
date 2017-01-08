@@ -46,7 +46,7 @@ public class Configuration {
             this.minerEndpoints = minerEndpoints;
         }
 
-        InfluxConfigDTO influxConfigDTO = configurationDTO.getInfluxConfigDTO();
+        InfluxConfigDTO influxConfigDTO = configurationDTO.getInfluxConfig();
         InfluxConfig influxConfig = new InfluxConfig(influxConfigDTO.getHost(),influxConfigDTO.getUser(),influxConfigDTO.getPass(),influxConfigDTO.getDb());
 
         this.influxConfig = influxConfig;
@@ -69,7 +69,7 @@ public class Configuration {
         ConfigurationDTO configurationDTO = new ConfigurationDTO();
         configurationDTO.setMinerEndpoints(convertToDTO(this.minerEndpoints));
         configurationDTO.setTickTime(DEFAULT_TICK_TIME);
-        configurationDTO.setInfluxConfigDTO(influxConfigDTO);
+        configurationDTO.setInfluxConfig(influxConfigDTO);
 
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -148,7 +148,7 @@ public class Configuration {
         List<MinerEndpointDTO> minerEndpointDTOs = convertToDTO(configuration.getMinerEndpoints());
         configurationDTO.setMinerEndpoints(minerEndpointDTOs);
         InfluxConfig influxConfig = configuration.getInfluxConfig();
-        configurationDTO.setInfluxConfigDTO(InfluxConfig.convertToDTO(influxConfig));
+        configurationDTO.setInfluxConfig(InfluxConfig.convertToDTO(influxConfig));
         configurationDTO.setTickTime(configuration.getTickTime());
         return configurationDTO;
     }
