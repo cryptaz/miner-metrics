@@ -37,8 +37,8 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>URL</th>
-                    <th>Count of cards</th>
+                    <th>Name</th>
+                    <th>Url</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -123,7 +123,7 @@
             <p> </p>
             <div ng-if="error">There was error during getting config!</div>
             <div ng-if="savedConfig" class="alert alert-success">Successfully saved configuration!</div>
-            <div ng-if="savedConfig == false" class="alert alert-danger">There was error during saving configuration!</div>
+            <div ng-if="savedConfig == false && savedConfig != null" class="alert alert-danger">There was error during saving configuration!</div>
         </div>
     </div>
 </div>

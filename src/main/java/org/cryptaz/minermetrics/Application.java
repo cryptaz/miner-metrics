@@ -77,6 +77,7 @@ public class Application {
                 if (!Objects.equals(request.body(), "")) {
                     ObjectMapper objectMapper = new ObjectMapper();
                     try {
+                        log.info("We got json with config from WebUI:" + request.body());
                         ConfigurationDTO configurationDTO = objectMapper.readValue(request.body(), ConfigurationDTO.class);
                         configuration.loadFromDTO(configurationDTO);
                         configuration.save();
