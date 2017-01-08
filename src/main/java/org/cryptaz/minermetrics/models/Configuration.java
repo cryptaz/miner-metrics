@@ -42,6 +42,7 @@ public class Configuration {
         log.info("We found this config in file:" + json);
         if(json.equals("CREATE_DEFAULT_CONFIG")) {
             //emulate config not found. This is done for docker purposes
+            log.info("Creating new default config instruction found, creating default");
             throw new IOException();
         }
         ObjectMapper objectMapper = new ObjectMapper();
