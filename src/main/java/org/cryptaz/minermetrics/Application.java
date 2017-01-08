@@ -42,7 +42,7 @@ public class Application {
             log.info("Trying to load config from file (config.json)");
             configuration.loadFromFile(new File("config.json"));
         } catch (IOException e) {
-            log.info("Could not load config. Creating new with default");
+            log.info("Could not load config or instruction to create new one is passed. Creating new default config");
             try {
                 configuration.initDefault();
             } catch (IOException e1) {
