@@ -126,6 +126,7 @@ public class AsyncTicker implements Runnable {
                 if (claymores != null) {
                     for (ClaymoreAPI claymoreAPI : claymores) {
                         ClaymoreTickDTO tickDTO = claymoreAPI.tick();
+                        log.info("Tick");
                         if (tickDTO == null) {
                             failedTicks++;
                             continue;
@@ -139,7 +140,7 @@ public class AsyncTicker implements Runnable {
                     }
                 }
             }
-            if (lastNotified == null || new DateTime().minusMinutes(notificationTime).isAfter(lastNotified)) {
+            if (lastNotified == null || new DateTime().minusMinutes(configuration.getTickTime()).isAfter(lastNotified)) {
                 lastNotified = dateTime;
                 if (claymores != null) {
                     log.info("Processed " + (successfulTicks + failedTicks) + " ticks [" + (successfulTicks + failedTicks) + " successful; " + failedTicks + " failed]");
