@@ -17,8 +17,9 @@ Tool is highly experimental, I would say it's alpha version, so bugs may appear.
 * Latest Claymore ZEC miner (eth miner should be supported too, but I did not tested it)
 
 # Install
-* Open Docker Quickstart terminal, remember the ip, assigned to docker (usually, 192.168.99.100, so I will be using it below), and type:
-
+* [LINUX] You should obtain your host docker ip address by yourself. When you fully pull and start image, try using ```docker-machine ip``` or ```docker inspect -f '{{ .NetworkSettings.IPAddress }}' miner-metrics``` to get ip address. Or you can simply watch over all of your interfaces by using ```ip addr```, just pick the right one.
+* [WINDOWS] Open Docker Quickstart terminal, remember the ip, assigned to docker (usually, 192.168.99.100, so I will be using it below)
+* Pull the image from Docker Hub repository:
     ```
 docker pull cryptaz/miner-metrics
     ```
