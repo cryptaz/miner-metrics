@@ -40,7 +40,12 @@ public class Configuration {
     public void loadFromFile(File file) throws IOException {
         String json = FileUtils.readFileToString(file);
         log.info("We found this config in file:" + json);
-        log.info("test line");
+        log.info("Start testline");
+        char[] testchararray = json.toCharArray();
+        for(char c : testchararray) {
+            log.info(c);
+        }
+        log.info("End testline");
         if(json.trim().equals("CREATE_DEFAULT_CONFIG")) {
             //emulate config not found. This is done for docker purposes
             log.info("Creating new default config instruction found, creating default");
