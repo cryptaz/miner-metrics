@@ -14,7 +14,7 @@ Tool is highly experimental, I would say it's alpha version, so bugs may appear.
 
 # Requirements
 * Docker Toolbox (https://www.docker.com/products/docker-toolbox)
-* Latest Claymore ZEC miner (eth miner should be supported too, but I did not tested it)
+* Latest Claymore ZEC miner (Claymore ETH miner supported too, but I did not tested it deeply)
 
 # Install
 * [LINUX] You should obtain your host docker ip address by yourself. When you fully pull and start image, try using ```docker-machine ip``` or ```docker inspect -f '{{ .NetworkSettings.IPAddress }}' miner-metrics``` to get ip address. Or you can simply watch over all of your interfaces by using ```ip addr```, just pick the right one.
@@ -68,11 +68,9 @@ I have attached building scripts in my repo(assets/scripts/build/docker), so you
 And then start normally as described above.
 
 # TODO
-* Test Claymore ETH dualminer
 * Unit tests
 * [ARCHITECT] get rid out of status.json
 * Add cryptocurrencies ticking and make profit dashboard
-* Extend management interface (Web UI)
 * Automated upgrade
 
 # Upgrade
