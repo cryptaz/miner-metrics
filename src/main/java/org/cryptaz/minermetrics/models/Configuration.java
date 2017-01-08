@@ -29,6 +29,7 @@ public class Configuration {
     private InfluxConfig influxConfig;
 
     public void loadFromDTO(ConfigurationDTO configurationDTO) {
+        log.info("Saving configuration from DTO)");
         List<MinerEndpoint> minerEndpoints = convertFromDTO(configurationDTO.getMinerEndpoints());
         InfluxConfig influxConfig = InfluxConfig.convertFromDTO(configurationDTO.getInfluxConfig());
         this.tickTime = configurationDTO.getTickTime();
@@ -93,6 +94,7 @@ public class Configuration {
     }
 
     public void save() throws IOException {
+        log.info("Saving configuration to file)");
         ConfigurationDTO configurationDTO = new ConfigurationDTO();
         configurationDTO.setTickTime(this.tickTime);
         if (this.minerEndpoints != null) {
