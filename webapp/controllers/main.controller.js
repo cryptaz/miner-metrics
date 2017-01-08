@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('minerMetricsApp')
-    .controller('MainController', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
+    .controller('MainController', ['$scope', '$http', '$timeout', '$q', function ($scope, $http, $timeout, $q) {
         console.log('Main page opened');
         $scope.initialized = null;
         $scope.game = false;
