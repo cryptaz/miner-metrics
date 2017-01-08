@@ -31,9 +31,11 @@ docker run --name miner-metrics -d -p 80:3000 -p 8080:80 cryptaz/miner-metrics
 * Open http://192.168.99.100 and login via admin:admin
 * Open Data Sources
 * Add new data source with name ```influx```, type ```InfluxDB```, url ```http://127.0.0.1:8086```, database ```minermetrics```, user ```root```, password ```root```
-* Go to http://192.168.99.100:8080 and wait until all services is initialized. After everything is set up, add your claymore miner at configuration page, then open main page and generate dashboards for your claymores.
-* Return to Grafana (http://192.168.99.100), click Dashboards - import and paste that JSON into textarea, enter name, choose datasource influx and apply.
-* Congratulations! You set up the metrics. Don't forget to choose time range.
+* Go to http://192.168.99.100:8080 and wait until all services is initialized
+* Add your claymore miner at configuration page (point to accessible -mport address, for me, it was http://192.168.99.1:30500)
+* Open main page and generate dashboard for your Claymore instance and copy JSON
+* Return to Grafana (http://192.168.99.100), click Dashboards - import and paste that JSON into textarea, enter name, choose datasource influx and apply
+* Congratulations! You set up the metrics. Don't forget to choose time range
 
 # Usage
 
