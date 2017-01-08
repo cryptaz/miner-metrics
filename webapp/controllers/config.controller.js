@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('minerMetricsApp')
-    .controller('ConfigController', ['$scope', '$http', function ($scope, $http) {
+    .controller('ConfigController', ['$scope', '$http', '$q', function ($scope, $http, $q) {
         console.log('Config page opened');
         $scope.editInflux = false;
         $scope.claymores = null;
