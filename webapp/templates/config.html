@@ -49,7 +49,7 @@
                 </tr>
                 </tbody>
             </table>
-            <button class="btn btn-primary" ng-click="addNewMiner = !addNewMiner">Add new miner instance</button>
+            <button class="btn btn-primary" ng-click="addNewMiner = !addNewMiner" ng-disaled="!started">Add new miner instance</button>
             <p></p>
             <div ng-show="addNewMiner" style="width: 500px; border:1px solid rgba(0, 0, 0, .3);border-radius: 5px; padding:10px">
                 <h5>Add new miner:</h5>
@@ -117,7 +117,7 @@
                 to edit this anyway
             </button>
             <hr>
-            <button class="btn-lg btn-success" ng-show="!editInflux" ng-click="saveConfig()">
+            <button class="btn-lg btn-success" ng-show="!editInflux" ng-disaled="!started" ng-click="saveConfig()">
                 Save configuration
             </button>
             <p> </p>

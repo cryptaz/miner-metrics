@@ -29,7 +29,7 @@ else
 fi
 echo "Starting Grafana" >> /opt/start.sh.log 2>> /opt/start.sh.log
 service grafana-server start >> /opt/start.sh.log 2>> /opt/start.sh.log
-if [ -d /etc/nginx/sites-enabled/default ]; then
+if [ -f /etc/nginx/sites-enabled/default ]; then
     echo "Removing default nginx config" >> /opt/start.sh.log 2>> /opt/start.sh.log
     rm /etc/nginx/sites-enabled/default >> /opt/start.sh.log 2>> /opt/start.sh.log
 fi
@@ -43,7 +43,7 @@ if [ -d /home/metrics/miner-metrics ]; then
     rm -R /home/metrics/miner-metrics >> /opt/start.sh.log 2>> /opt/start.sh.log
 fi
 echo "Cloning from git" >> /opt/start.sh.log 2>> /opt/start.sh.log
-git clone -b develop https://github.com/cryptaz/miner-metrics.git /home/metrics/miner-metrics >> /opt/start.sh.log 2>> /opt/start.sh.log
+git clone https://github.com/cryptaz/miner-metrics.git /home/metrics/miner-metrics >> /opt/start.sh.log 2>> /opt/start.sh.log
 echo "It seems like it's cloned from git. Making webapp..." >> /opt/start.sh.log 2>> /opt/start.sh.log
 chown metrics:metrics -R /home/metrics/miner-metrics >> /opt/start.sh.log 2>> /opt/start.sh.log
 rm /var/www/html/index.html >> /opt/start.sh.log 2>> /opt/start.sh.log

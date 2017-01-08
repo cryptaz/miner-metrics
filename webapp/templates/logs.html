@@ -24,8 +24,7 @@
                     <button class="btn btn-xl btn-warning" ng-click="showLog('daemon')">Daemon</button>
                 </div>
             </div>
-            <pre ng-show="log" style="width: 80%">{{log}}</pre>
-
+            <pre ng-show="log" style="width: 80%;height:600px">{{log}}</pre>
 
             <div ng-if="error.noLogFileFound" class="alert alert-danger">Cannot access log file! Something nasty is
                 happening. Try to jump into docker and watch logs by yourself.

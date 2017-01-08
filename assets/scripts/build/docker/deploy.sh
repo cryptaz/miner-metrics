@@ -6,4 +6,4 @@ curl https://packagecloud.io/gpg.key | sudo apt-key add -
 curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -
 apt-get update
 echo "Installing dependencies"
-apt-get -y install default-jdk maven sudo apt-transport-https curl grafana influxdb git wget nano sudo curl
+apt-get -y install default-jdk maven sudo apt-transport-https curl grafana influxdb git nano wget nginx
