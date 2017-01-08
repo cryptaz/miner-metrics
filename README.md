@@ -80,7 +80,8 @@ I will push new image to docker each new snapshot release. Just pull new image f
 However, at now, you will lose your data if you start new updated image(as you creating whole new machine).
 Best way to migrate database, is to dump InfluxDB manually, upgrade, and then import data again (if you know how to do it). I will look into that soon to provide automated upgrade. It is on my todo list.
 Alternatively, to avoid using data, you can download Influxdb for your host system, and point daemon to this database.
-On each new snapshot, I will push new image to the docker repository. At now, you will lose your data on each new snapshot ()
+On each new snapshot, I will push new image to the docker repository.
+However again, In general, it is not needede to upgrade docker, I am pushing minor modifications(which is not affecting docker envrionment) to Github master branch, so you can simply restart your container  to catch up modifications using ```docker stop miner-metrics && docker start miner-metrics```
 
 # Troubleshooting
 Some places where to find out what's going on. Firstly, ensure that container started by typing
