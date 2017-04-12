@@ -21,13 +21,12 @@ Tool is highly experimental, I would say it's alpha version, so bugs may appear.
 * [WINDOWS] Open Docker Quickstart terminal, remember the ip, assigned to docker (usually, 192.168.99.100, so I will be using it below)
 * Pull the image from Docker Hub repository:
     ```
-docker pull cryptaz/miner-metrics
+    docker pull cryptaz/miner-metrics
     ```
 * Patiently wait until image is downloading. It may take up to 30 minutes.
 * Run container for the first time to initialize all services:
-
     ```
-docker run --name miner-metrics -d -p 80:3000 -p 8080:80 cryptaz/miner-metrics
+    docker run --name miner-metrics -d -p 80:3000 -p 8080:80 cryptaz/miner-metrics
     ```
 * Open http://192.168.99.100 and login via admin:admin
 * Open Data Sources
@@ -74,12 +73,15 @@ And then start normally as described above.
 * Automated upgrade
 
 # Upgrade
-I will push new image to docker each new snapshot release. Just pull new image from docker using ```docker pull cryptaz/miner-metrics``
+I will push new image to docker each new snapshot release. Just pull new image from docker using <br>
+```docker pull cryptaz/miner-metrics```
+<br>
 However, at now, you will lose your data if you start new updated image(as you creating whole new machine).
 Best way to migrate database, is to dump InfluxDB manually, upgrade, and then import data again (if you know how to do it). I will look into that soon to provide automated upgrade. It is on my todo list.
 Alternatively, to avoid using data, you can download Influxdb for your host system, and point daemon to this database.
 On each new snapshot, I will push new image to the docker repository.
-However again, In general, it is not needede to upgrade docker, I am pushing minor modifications(which is not affecting docker envrionment) to Github master branch, so you can simply restart your container  to catch up modifications using ```docker stop miner-metrics && docker start miner-metrics```
+However again, In general, it is not needede to upgrade docker, I am pushing minor modifications(which is not affecting docker envrionment) to Github master branch, so you can simply restart your container  to catch up modifications using 
+```docker stop miner-metrics && docker start miner-metrics```
 
 # Troubleshooting
 Some places where to find out what's going on. Firstly, ensure that container started by typing
