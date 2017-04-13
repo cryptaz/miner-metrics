@@ -101,9 +101,9 @@ public class AsyncTicker implements Runnable {
         this.failedTicks = 0;
         log.info("Async worker started");
         while (isWorking) {
-            log.info("Ticking");
             DateTime dateTime = new DateTime();
             if (dateTime.getSecondOfMinute() % tickTime == 0) {
+                log.info("Ticking");
                 List<MinerEndpoint> minerEndpoints = configuration.getMinerEndpoints();
                 if (minerEndpoints != null) {
                     for (MinerEndpoint minerEndpoint : minerEndpoints) {
