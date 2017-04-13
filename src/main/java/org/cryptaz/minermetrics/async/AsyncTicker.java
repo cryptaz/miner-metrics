@@ -101,6 +101,7 @@ public class AsyncTicker implements Runnable {
         this.failedTicks = 0;
         log.info("Async worker started");
         while (isWorking) {
+            log.info("Ticking");
             DateTime dateTime = new DateTime();
             if (dateTime.getSecondOfMinute() % tickTime == 0) {
                 List<MinerEndpoint> minerEndpoints = configuration.getMinerEndpoints();
@@ -122,11 +123,11 @@ public class AsyncTicker implements Runnable {
                         }
                     }
                 }
-
                 if (claymores != null) {
                     for (ClaymoreAPI claymoreAPI : claymores) {
                         ClaymoreTickDTO tickDTO = claymoreAPI.tick();
                         if (tickDTO == null) {
+                            log.info("Ticking failed for url " + claymoreAPI.getUrl());
                             failedTicks++;
                             continue;
                         }
