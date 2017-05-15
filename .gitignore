@@ -20,7 +20,7 @@ target/*
 daemon.properties
 default_dashboards.json
 *.stdout
-*.log
+*.log*
 .initialized
 status.json
 config.json
